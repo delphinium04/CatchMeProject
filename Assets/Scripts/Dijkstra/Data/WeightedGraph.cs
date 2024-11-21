@@ -1,42 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dijkstra.Data;
 
-public class WeightedGraph
+namespace Dijkstra.Data
 {
-    public const int INF = 20000000;
-    public int VertexCount;
-
-    bool Directed = false;
-    public List<Edge> Edges;
-
-    public WeightedGraph(int vertexCount, bool directed)
+    public class WeightedGraph
     {
-        VertexCount = vertexCount;
-        Directed = directed;
+        public const int INF = 20000000;
+        public int VertexCount;
 
-        Edges = new List<Edge>();
-    }
+        bool Directed = false;
+        public List<Edge> Edges;
 
-    public void AddEdge(params Edge[] e)
-    {
-        List<Edge> edges = e.ToList();
-        Edges.AddRange(edges);
-        if (!Directed)
-            Edges.AddRange(edges.Select(edge => new Edge(edge.To, edge.From, edge.Weight)));
-    }
+        public WeightedGraph(int vertexCount, bool directed)
+        {
+            VertexCount = vertexCount;
+            Directed = directed;
 
-    public List<int[]> GetWeights()
-    {
-        List<int[]> weights = new List<int[]>();
-        for (int i = 0; i < VertexCount; i++)
-            weights.Add(Enumerable.Repeat(INF, VertexCount).ToArray());
+            Edges = new List<Edge>();
+        }
 
-        Edges.ForEach(e => { weights[(int)e.From][(int)e.To] = e.Weight; });
+        public void AddEdge(params Edge[] e)
+        {
+            List<Edge> edges = e.ToList();
+            Edges.AddRange(edges);
+            if (!Directed)
+                Edges.AddRange(edges.Select(edge => new Edge(edge.To, edge.From, edge.Weight)));
+        }
 
-        for (int i = 0; i < VertexCount; i++)
-            weights[i][i] = 0;
+        public List<int[]> GetWeights()
+        {
+            List<int[]> weights = new List<int[]>();
+            for (int i = 0; i < VertexCount; i++)
+                weights.Add(Enumerable.Repeat(INF, VertexCount).ToArray());
 
-        return weights;
+            Edges.ForEach(e => { weights[(int)e.From][(int)e.To] = e.Weight; });
+
+            for (int i = 0; i < VertexCount; i++)
+                weights[i][i] = 0;
+
+            return weights;
+        }
     }
 }
