@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 // 훌륭한 gpt-4o의 산출물
 namespace Utils
