@@ -8,8 +8,7 @@ namespace Dijkstra
         public NodeEnum nodeEnum;
         public void OnMouseDown()
         {
-            Debug.Log($"{nodeEnum} clicked");
-            TestManager.Instance.OnNodeClicked(nodeEnum);
+            DijkstraManager.Instance.OnNodeClicked(nodeEnum);
         }
     }
 }

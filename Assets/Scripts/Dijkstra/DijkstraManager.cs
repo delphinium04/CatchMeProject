@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dijkstra.Data;
@@ -8,33 +9,46 @@ using Utils;
 
 namespace Dijkstra
 {
-    public class TestManager : Singleton<TestManager>
+    public class DijkstraManager : Singleton<DijkstraManager>
     {
-        [Header("DEBUG")]
-        public List<Edge> edges = null;
-        public Transform testNodeParent;
-        public Material testMaterial;
-        public NodeEnum startNode;
-        public NodeEnum endNode;
-        public UIManager uiManager;
+        public DijkstraUIManager _dijkstraUIManager;
+        [Header("Data")] 
+        public List<Edge> _edges = null;
+        public Transform _nodeParent;
+        public Material _lineMaterial;
+        
+        [Header("Node")]
+        public NodeEnum _startNode;
+        public NodeEnum _endNode;
 
         WeightedGraph _graph;
         Dictionary<NodeEnum, GameObject> _nodeObjects = null;
 
+        float timer = 0;
+
         void Awake()
         {
             _nodeObjects = new Dictionary<NodeEnum, GameObject>();
-            edges ??= new List<Edge>();
+            _edges ??= new List<Edge>();
         }
 
         void Start()
+        {
+            GameStart();
+        }
+
+        void GameStart()
         {
             NodeInit();
             GraphInit();
             RoadInit();
 
-            Dijkstra(ref _graph, startNode, out var distance, out var tracedVertex);
-            uiManager.SetBestPath(tracedVertex[(int)endNode].Select(e => (int)e).ToArray());
+            Dijkstra(ref _graph, _startNode, out var distance, out var tracedVertex);
+            
+            string result = string.Join(" > ", tracedVertex[(int)_endNode].Select(e => ((int)e).ToString()).ToArray());
+            Debug.Log($"Best Path: {result}");
+
+            StartCoroutine(SetTimer(30));
         }
 
         void RoadInit()
@@ -76,7 +90,7 @@ namespace Dijkstra
 
         void SetLineRendererValues(LineRenderer target)
         {
-            target.material = testMaterial;
+            target.material = _lineMaterial;
             target.positionCount = 2;
             target.useWorldSpace = true;
             target.startWidth = target.endWidth = 0.5f;
@@ -87,7 +101,7 @@ namespace Dijkstra
             int enumCount = Enum.GetValues(typeof(NodeEnum)).Length;
             for (int i = 0; i < enumCount; i++)
             {
-                Transform child = testNodeParent.Find(((NodeEnum)i).ToString());
+                Transform child = _nodeParent.Find(((NodeEnum)i).ToString());
                 if (child is not null)
                     _nodeObjects.Add((NodeEnum)i, child.gameObject);
                 else
@@ -97,11 +111,11 @@ namespace Dijkstra
 
         void GraphInit()
         {
-            _graph = new WeightedGraph(testNodeParent.childCount, false);
-            _graph.AddEdge(edges.ToArray());
+            _graph = new WeightedGraph(_nodeParent.childCount, false);
+            _graph.AddEdge(_edges.ToArray());
         }
 
-        private T GetNodeObject<T>(NodeEnum nodeEnum)
+        T GetNodeObject<T>(NodeEnum nodeEnum)
         {
             if (_nodeObjects.ContainsKey(nodeEnum))
                 return _nodeObjects[nodeEnum].GetComponent<T>();
@@ -109,7 +123,7 @@ namespace Dijkstra
             return default(T);
         }
 
-        public void Dijkstra(ref WeightedGraph graph, NodeEnum start, out int[] distance,
+        void Dijkstra(ref WeightedGraph graph, NodeEnum start, out int[] distance,
             out List<NodeEnum>[] tracedVertex)
         {
             int length = graph.VertexCount;
@@ -121,9 +135,9 @@ namespace Dijkstra
 
             List<NodeEnum> visitedVertex = new List<NodeEnum> { start };
 
+            NodeEnum minVertex = start;
             while (visitedVertex.Count < length)
             {
-                NodeEnum minVertex = start;
                 for (int node = 0, min = WeightedGraph.INF; node < length; node++)
                 {
                     if (visitedVertex.Contains((NodeEnum)node) || distance[node] > min) continue;
@@ -144,7 +158,25 @@ namespace Dijkstra
 
         public void OnNodeClicked(NodeEnum node)
         {
-            uiManager.SetUserPath((int) node);        
+            _dijkstraUIManager.SetUserPath((int)node);
+        }
+
+        IEnumerator SetTimer(float time)
+        {
+            timer = time;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                _dijkstraUIManager.SetTimerText(timer);
+                yield return null;
+            }
+
+            timer = 0;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
     }
 }
