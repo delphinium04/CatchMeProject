@@ -1,48 +1,69 @@
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Dijkstra
 {
     public class DijkstraUIManager : MonoBehaviour
     {
-        List<int> _userPath;
+        public Action OnResetButtonClicked = null;
+        public Action OnConfirmButtonClicked = null;
+        public Action OnNextButtonClicked = null;
+        
+        [Header("For Game")]
         public TMP_Text _userPathText;
         public TMP_Text _timerText;
-        public UnityEngine.UI.Button _resetButton;
+        public TMP_Text _stageText;
+        public TMP_Text _targetNodeText;
+        public Button _resetButton;
+        public Button _confirmButton;
+        public Button _nextRoundButton;
+        public GameObject _resultPanel;
 
-        void Awake()
-        {
-            _userPath = new List<int>();
-        }
+        [Header("For Failed Scene")]
+        public Button _retryButton; 
 
         void Start()
         {
-            UpdateUserPath();
-            _resetButton.onClick.AddListener(() => { _userPath.Clear(); UpdateUserPath(); });
+            _resultPanel?.SetActive(false);
+
+            if(_resetButton != null)
+                _resetButton.onClick.AddListener(() => OnResetButtonClicked?.Invoke()); 
+            if(_confirmButton != null)
+                _confirmButton.onClick.AddListener(() => OnConfirmButtonClicked?.Invoke());  
+            if(_nextRoundButton != null)
+                _nextRoundButton.onClick.AddListener(() => OnNextButtonClicked?.Invoke());
+            if(_retryButton != null)
+                _retryButton.onClick.AddListener(() => SceneManager.LoadScene("Dijkstra"));
         }
 
-        void UpdateUserPath()
+        #region INGAME
+
+        public void SetStage(int stageNumber, int targetNode)
         {
-            if (_userPath.Count == 0)
-            {
-                _userPathText.text = "";
-                return;
-            }
-            string t = string.Join(">", _userPath);
-            _userPathText.text = t;
+            _stageText.text = $"스테이지 {stageNumber}";
+            _targetNodeText.text = $"목표 도착점: {targetNode}";
         }
-    
+
         public void SetUserPath(params int[] path)
         {
-            _userPath.AddRange(path);
-            UpdateUserPath();
+            string text = String.Join(" > ", path);
+            _userPathText.text = text;
         }
-        
+
         public void SetTimerText(float t)
         {
             string text = $"Timer: {t:F2}";
             _timerText.text = text;
         }
-    }
+
+        public void StageWin()
+        {
+            _resultPanel.SetActive(true);
+        }
+
+        #endregion INGAME
+        }
 }

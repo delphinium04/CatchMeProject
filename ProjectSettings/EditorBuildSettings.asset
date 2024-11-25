@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Dijkstra.unity
+    guid: 70e9c969b73ba4c47ac0f65cac8b38d7
+  - enabled: 1
+    path: Assets/Scenes/DijkstraFailed.unity
+    guid: 3c60798bf387dd04f9a52d912514a3b1
+  - enabled: 1
+    path: Assets/Scenes/DijkstraTimeOver.unity
+    guid: da49cbf37df80ae46bcf14996d1eda5f
   m_configObjects: {}

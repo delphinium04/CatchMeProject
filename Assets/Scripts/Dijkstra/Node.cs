@@ -1,3 +1,4 @@
+using System;
 using Dijkstra.Data;
 using UnityEngine;
 
@@ -5,10 +6,11 @@ namespace Dijkstra
 {
     public class Node : MonoBehaviour
     {
-        public NodeEnum nodeEnum;
+        public Action<NodeEnum> OnNodeClicked;
+        public NodeEnum _nodeEnum;
         public void OnMouseDown()
         {
-            DijkstraManager.Instance.OnNodeClicked(nodeEnum);
+            OnNodeClicked?.Invoke(_nodeEnum);
         }
     }
 }

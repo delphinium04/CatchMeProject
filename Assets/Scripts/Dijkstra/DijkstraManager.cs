@@ -5,125 +5,141 @@ using System.Linq;
 using Dijkstra.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Dijkstra
 {
-    public class DijkstraManager : Singleton<DijkstraManager>
+    public class DijkstraManager : MonoBehaviour
     {
         public DijkstraUIManager _dijkstraUIManager;
-        [Header("Data")] 
-        public List<Edge> _edges = null;
+        [Header("Data")] public int _stageNumber = 1;
+        public List<Edge> _edges = new();
         public Transform _nodeParent;
         public Material _lineMaterial;
-        
-        [Header("Node")]
-        public NodeEnum _startNode;
+
+        [Header("Node")] public NodeEnum _startNode;
         public NodeEnum _endNode;
 
-        WeightedGraph _graph;
-        Dictionary<NodeEnum, GameObject> _nodeObjects = null;
+        WeightedGraph _graph = null;
+        Dictionary<NodeEnum, GameObject> _nodeObjects = new();
+        NodeEnum[] _bestRoute;
 
-        float timer = 0;
+        // INGAME
+        List<NodeEnum> _userSelectedNodes;
+        float _timer = 0;
 
         void Awake()
         {
             _nodeObjects = new Dictionary<NodeEnum, GameObject>();
-            _edges ??= new List<Edge>();
         }
 
         void Start()
         {
+            _dijkstraUIManager.OnResetButtonClicked += ResetSelection;
+            _dijkstraUIManager.OnConfirmButtonClicked += OnConfirmButtonClicked;
             GameStart();
+        }
+
+        void OnDestroy()
+        {
+            if (_dijkstraUIManager is not null)
+            {
+                _dijkstraUIManager.OnResetButtonClicked -= ResetSelection;
+                _dijkstraUIManager.OnConfirmButtonClicked -= OnConfirmButtonClicked;
+            }
         }
 
         void GameStart()
         {
-            NodeInit();
-            GraphInit();
-            RoadInit();
+            InitializeNodes();
+            InitializeGraph();
+            InitializeRoads();
+            RunDijkstraAlgorithm(_graph, _startNode, out var distance, out var tracedVertex);
 
-            Dijkstra(ref _graph, _startNode, out var distance, out var tracedVertex);
-            
+            _userSelectedNodes = new List<NodeEnum>();
+            _bestRoute = tracedVertex[(int)_endNode].ToArray();
             string result = string.Join(" > ", tracedVertex[(int)_endNode].Select(e => ((int)e).ToString()).ToArray());
             Debug.Log($"Best Path: {result}");
 
+
+            _dijkstraUIManager.SetStage(_stageNumber, (int)_startNode);
             StartCoroutine(SetTimer(30));
         }
 
-        void RoadInit()
+        void InitializeRoads()
         {
             _graph.Edges.ForEach(e =>
             {
-                Transform start = GetNodeObject<Transform>(e.From);
-                Transform destination = GetNodeObject<Transform>(e.To);
+                Transform start = _nodeObjects[e.From].transform;
+                Transform destination = _nodeObjects[e.To].transform;
 
-                GameObject lineGo = new GameObject
+                // Make Line
+                GameObject lineGo = new()
                 {
-                    name = $"{start.name}-{destination.name} Line"
+                    name = $"{start.name}-{destination.name} Weight Line"
                 };
                 lineGo.transform.SetParent(start);
                 lineGo.transform.localPosition = Vector3.zero;
-
                 LineRenderer line = lineGo.AddComponent<LineRenderer>();
-                SetLineRendererValues(line);
-                line.SetPosition(0, start.position);
-                line.SetPosition(1, destination.position);
-                line.textureMode = LineTextureMode.Tile;
-                line.sortingOrder = 5;
+                ConfigureLineRenderer(line, start.position, destination.position);
 
+                // Set Text.text = weight
                 GameObject textGo = new GameObject
                 {
                     name = $"{start.name}-{destination.name} Weight Text"
                 };
                 textGo.transform.SetParent(lineGo.transform);
-
                 TextMeshPro tmp = textGo.AddComponent<TextMeshPro>();
-                textGo.transform.position = (start.position + destination.position) / 2;
-                tmp.text = e.Weight.ToString();
-                tmp.alignment = TextAlignmentOptions.Center;
-                tmp.fontSize = 5;
-                tmp.color = Color.white;
-                tmp.sortingOrder = 10;
+                ConfigureTMPText(tmp, e.Weight, (start.position + destination.position) / 2);
             });
         }
 
-        void SetLineRendererValues(LineRenderer target)
+        void ConfigureLineRenderer(LineRenderer target, Vector3 startPos, Vector3 endPos)
         {
             target.material = _lineMaterial;
             target.positionCount = 2;
             target.useWorldSpace = true;
             target.startWidth = target.endWidth = 0.5f;
+            target.textureMode = LineTextureMode.Tile;
+            target.sortingOrder = 5;
+            target.SetPosition(0, startPos);
+            target.SetPosition(1, endPos);
         }
 
-        void NodeInit()
+        void ConfigureTMPText(TextMeshPro target, int weight, Vector3 pos)
+        {
+            target.text = weight.ToString();
+            target.alignment = TextAlignmentOptions.Center;
+            target.fontSize = 5;
+            target.color = Color.white;
+            target.sortingOrder = 10;
+            target.transform.position = pos;
+        }
+
+        void InitializeNodes()
         {
             int enumCount = Enum.GetValues(typeof(NodeEnum)).Length;
             for (int i = 0; i < enumCount; i++)
             {
                 Transform child = _nodeParent.Find(((NodeEnum)i).ToString());
                 if (child is not null)
+                {
                     _nodeObjects.Add((NodeEnum)i, child.gameObject);
+                    child.GetComponent<Node>().OnNodeClicked += OnNodeClicked;
+                }
                 else
                     Debug.Log($"{(NodeEnum)i}'s Object doesn't exist");
             }
         }
 
-        void GraphInit()
+        void InitializeGraph()
         {
             _graph = new WeightedGraph(_nodeParent.childCount, false);
             _graph.AddEdge(_edges.ToArray());
         }
 
-        T GetNodeObject<T>(NodeEnum nodeEnum)
-        {
-            if (_nodeObjects.ContainsKey(nodeEnum))
-                return _nodeObjects[nodeEnum].GetComponent<T>();
-            Debug.LogError($"{nodeEnum} Object was not found");
-            return default(T);
-        }
-
-        void Dijkstra(ref WeightedGraph graph, NodeEnum start, out int[] distance,
+        void RunDijkstraAlgorithm(WeightedGraph graph, NodeEnum start, out int[] distance,
             out List<NodeEnum>[] tracedVertex)
         {
             int length = graph.VertexCount;
@@ -133,16 +149,23 @@ namespace Dijkstra
             var weights = graph.GetWeights();
             distance = weights[(int)start];
 
-            List<NodeEnum> visitedVertex = new List<NodeEnum> { start };
+            HashSet<NodeEnum> visitedVertex = new HashSet<NodeEnum> { start };
 
             NodeEnum minVertex = start;
             while (visitedVertex.Count < length)
             {
+                NodeEnum minVertexExceptForWhile = minVertex;
                 for (int node = 0, min = WeightedGraph.INF; node < length; node++)
                 {
                     if (visitedVertex.Contains((NodeEnum)node) || distance[node] > min) continue;
                     min = distance[node];
                     minVertex = (NodeEnum)node;
+                }
+
+                if (minVertex == minVertexExceptForWhile)
+                {
+                    Debug.LogError("No path exists, exit");
+                    break;
                 }
 
                 visitedVertex.Add(minVertex);
@@ -156,27 +179,42 @@ namespace Dijkstra
             }
         }
 
-        public void OnNodeClicked(NodeEnum node)
+        void ResetSelection()
         {
-            _dijkstraUIManager.SetUserPath((int)node);
+            _userSelectedNodes.Clear();
+            OnNodeClicked(_startNode);
+        }
+
+        void OnNodeClicked(NodeEnum node)
+        {
+            _userSelectedNodes.Add(node);
+            _dijkstraUIManager.SetUserPath(_userSelectedNodes.Select(e => (int)e).ToArray());
+        }
+
+        void OnConfirmButtonClicked()
+        {
+            if (_userSelectedNodes.Count == _bestRoute.Length && _userSelectedNodes.SequenceEqual(_bestRoute))
+            {
+                _dijkstraUIManager.StageWin();
+            }
+            else
+            {
+                SceneManager.LoadScene("DijkstraFailed");
+            }
         }
 
         IEnumerator SetTimer(float time)
         {
-            timer = time;
-            while (timer > 0)
+            _timer = time;
+            while (_timer > 0)
             {
-                timer -= Time.deltaTime;
-                _dijkstraUIManager.SetTimerText(timer);
+                _timer -= Time.deltaTime;
+                _dijkstraUIManager.SetTimerText(_timer);
                 yield return null;
             }
 
-            timer = 0;
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
+            _timer = 0;
+            SceneManager.LoadScene("DijkstraTimeOver");
         }
     }
 }
