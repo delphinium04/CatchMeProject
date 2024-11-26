@@ -27,7 +27,7 @@ namespace Dijkstra.Data
                 Edges.AddRange(edges.Select(edge => new Edge(edge.To, edge.From, edge.Weight)));
         }
 
-        public List<int[]> GetWeights()
+        public List<int[]> GetWeightMatrix()
         {
             List<int[]> weights = new List<int[]>();
             for (int i = 0; i < VertexCount; i++)

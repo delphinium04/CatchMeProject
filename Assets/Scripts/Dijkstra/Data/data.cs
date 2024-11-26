@@ -2,11 +2,12 @@
 {
     public static class StaticText
     {
-        public static string GameOverSceneName => "GameOverScene";
+        public static string DijkstraGameOverSceneName => "DijkstraGameOver";
+        public static string DijkstraGameSceneName => "Dijkstra";
         public static string PlayerPrefGameOverSign => "GameOverSign";
-        public static string TimeOverMessage => "너무 늦어버렸습니다!";
-        public static string WrongWayMessage => "You Took a Wrong Way!";
-        public static string TooSlowMessage => "You Were Too Slow!";
+        public static string TimeOverMessage => "시간이 너무 오래 지났습니다\n경찰에 잡혀버렸습니다!";
+        public static string WrongWayMessage => "여기가.. 어디지?\n길을 잃었습니다!";
+        public static string TooSlowMessage => "도주 경로가 너무 길어서\n경찰에 잡혔습니다!";
         public static string StageMessage(int stageNumber) => $"스테이지 {stageNumber}";
         public static string GoalNodeMessage(int targetNode) => $": {targetNode}";
         public static string TimerMessage(float t) => $"Timer: {t:F2}";

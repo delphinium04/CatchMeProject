@@ -68,6 +68,12 @@ namespace Dijkstra
             GetText(Texts.GoalNodeText).text = $": {targetNode}";
         }
 
+        public void SetSpeedText(float thief, float police)
+        {
+            GetText(Texts.PoliceText).text = $"{police:F1}M/s";
+            GetText(Texts.PlayerText).text = $"{thief:F1}M/s";
+        }
+
         public void SetUserPath(params int[] path)
         {
             string text = String.Join(" > ", path);
