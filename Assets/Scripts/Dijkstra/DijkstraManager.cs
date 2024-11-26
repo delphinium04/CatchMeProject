@@ -12,7 +12,18 @@ namespace Dijkstra
     public class DijkstraManager : MonoBehaviour
     {
         public DijkstraUIManager _dijkstraUIManager;
-        [Header("Data")] public int _stageNumber = 1;
+
+        Dictionary<NodeEnum, GameObject> _nodeObjects = new();
+        List<NodeEnum> _userSelectedNodes;
+        NodeEnum[] _bestRoute;
+
+        float _timer = 0;
+        WeightedGraph _graph = null;
+
+        #region OUT_VARIABLES
+
+        [Header("Data")] public int _time;
+        public int _stageNumber = 1;
         public List<Edge> _edges = new();
         public Transform _nodeParent;
         public Material _lineMaterial;
@@ -20,14 +31,9 @@ namespace Dijkstra
         [Header("Node")] public NodeEnum _startNode;
         public NodeEnum _endNode;
 
-        WeightedGraph _graph = null;
-        Dictionary<NodeEnum, GameObject> _nodeObjects = new();
-        NodeEnum[] _bestRoute;
+        #endregion OUT_VARIABLES
 
-        // INGAME
-        List<NodeEnum> _userSelectedNodes;
-        float _timer = 0;
-
+       
         void Awake()
         {
             _nodeObjects = new Dictionary<NodeEnum, GameObject>();
@@ -61,9 +67,9 @@ namespace Dijkstra
             string result = string.Join(" > ", tracedVertex[(int)_endNode].Select(e => ((int)e).ToString()).ToArray());
             Debug.Log($"Best Path: {result}");
 
-
-            _dijkstraUIManager.SetStage(_stageNumber, (int)_startNode);
-            StartCoroutine(SetTimer(30));
+            _dijkstraUIManager.SetStage(_stageNumber, (int)_endNode);
+            OnNodeClicked(_startNode);
+            StartCoroutine(SetTimer(_time));
         }
 
         void InitializeRoads()
@@ -186,20 +192,33 @@ namespace Dijkstra
 
         void OnNodeClicked(NodeEnum node)
         {
+            // check validity
+            if (_userSelectedNodes.Contains(node))
+                return;
+            if (_userSelectedNodes.Count > 0 && _userSelectedNodes.Last() == node)
+                return;
+            if (_userSelectedNodes.Count > 0 && !_edges.Any(e => e.From == _userSelectedNodes.Last() && e.To == node))
+                return;
+
             _userSelectedNodes.Add(node);
             _dijkstraUIManager.SetUserPath(_userSelectedNodes.Select(e => (int)e).ToArray());
         }
 
         void OnConfirmButtonClicked()
         {
-            if (_userSelectedNodes.Count == _bestRoute.Length && _userSelectedNodes.SequenceEqual(_bestRoute))
+            if (_userSelectedNodes.Last() != _endNode)
             {
-                _dijkstraUIManager.StageWin();
+                LoadGameOverScene(GameFail.WrongWay);
+                return;
             }
-            else
-            {
-                SceneManager.LoadScene("DijkstraFailed");
-            }
+
+            _dijkstraUIManager.StageClear();
+        }
+
+        void LoadGameOverScene(GameFail fail)
+        {
+            PlayerPrefs.SetInt(StaticText.PlayerPrefGameOverSign, (int) fail);
+            SceneManager.LoadScene(StaticText.GameOverSceneName);
         }
 
         IEnumerator SetTimer(float time)
@@ -213,7 +232,7 @@ namespace Dijkstra
             }
 
             _timer = 0;
-            SceneManager.LoadScene("DijkstraTimeOver");
+            LoadGameOverScene(GameFail.TimeOver);
         }
     }
 }
