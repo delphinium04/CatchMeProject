@@ -6,7 +6,6 @@ using Dijkstra.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Utils;
 
 namespace Dijkstra
 {
