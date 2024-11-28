@@ -25,7 +25,10 @@ public class DijkstraOverUIManager : DijkstraUIBase
         
         Get<Button>((int)Buttons.RetryButton).onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(StaticText.DijkstraGameSceneName);
+            int stageNumber = PlayerPrefs.GetInt(StaticText.PlayerPrefGameOverStage);
+            string sceneName = $"{StaticText.DijkstraGameSceneName} {stageNumber}";
+            Debug.Log(sceneName);
+            SceneManager.LoadScene(sceneName);
         });
     }
 

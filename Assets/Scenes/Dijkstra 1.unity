@@ -3252,6 +3252,7 @@ MonoBehaviour:
   _endNode: 6
   _thief: {fileID: 2100462445}
   _police: {fileID: 1056180760}
+  _policeDelay: 0.5
   _policeSpeed: 2
   _thiefSpeed: 2.5
 --- !u!4 &1073359863

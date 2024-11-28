@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Dijkstra.unity
+    path: Assets/Scenes/Dijkstra 1.unity
     guid: 70e9c969b73ba4c47ac0f65cac8b38d7
   - enabled: 1
+    path: Assets/Scenes/Dijkstra 3.unity
+    guid: 4257d805d009f4a49aad0888b56e398e
+  - enabled: 1
+    path: Assets/Scenes/Dijkstra 2.unity
+    guid: fe0c320547d8f9648b7ac7e34bb7c49c
+  - enabled: 1
     path: Assets/Scenes/DijkstraGameOver.unity
-    guid: ae86f335398bbef47b0c41322b68032e
+    guid: 3c60798bf387dd04f9a52d912514a3b1
   m_configObjects: {}
