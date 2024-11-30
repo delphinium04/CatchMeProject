@@ -12,7 +12,19 @@ namespace Dijkstra
     public class DijkstraManager : MonoBehaviour
     {
         public DijkstraUIManager _dijkstraUIManager;
-        [Header("Data")] public int _stageNumber = 1;
+
+        Dictionary<NodeEnum, GameObject> _nodeObjects = new();
+        List<NodeEnum> _userSelectedNodes;
+        NodeEnum[] _bestRoute;
+        WeightedGraph _graph = null;
+
+        float _timer = 0;
+        bool _disableInput = false;
+
+        #region OUT_VARIABLES
+
+        [Header("Data")] public int _time;
+        public int _stageNumber = 1;
         public List<Edge> _edges = new();
         public Transform _nodeParent;
         public Material _lineMaterial;
@@ -20,13 +32,14 @@ namespace Dijkstra
         [Header("Node")] public NodeEnum _startNode;
         public NodeEnum _endNode;
 
-        WeightedGraph _graph = null;
-        Dictionary<NodeEnum, GameObject> _nodeObjects = new();
-        NodeEnum[] _bestRoute;
+        [Header("Entity")] public PathFollower _thief;
+        public PathFollower _police;
+        public float _policeDelay = 0.5f;
+        public float _policeSpeed = 2f;
+        public float _thiefSpeed = 2.5f;
 
-        // INGAME
-        List<NodeEnum> _userSelectedNodes;
-        float _timer = 0;
+        #endregion OUT_VARIABLES
+
 
         void Awake()
         {
@@ -35,18 +48,18 @@ namespace Dijkstra
 
         void Start()
         {
-            _dijkstraUIManager.OnResetButtonClicked += ResetSelection;
-            _dijkstraUIManager.OnConfirmButtonClicked += OnConfirmButtonClicked;
-            GameStart();
-        }
-
-        void OnDestroy()
-        {
-            if (_dijkstraUIManager is not null)
+            _dijkstraUIManager.OnResetButtonClicked += () =>
             {
-                _dijkstraUIManager.OnResetButtonClicked -= ResetSelection;
-                _dijkstraUIManager.OnConfirmButtonClicked -= OnConfirmButtonClicked;
-            }
+                if (_disableInput) return;
+                ResetSelection();
+            };
+
+            _dijkstraUIManager.OnConfirmButtonClicked += () =>
+            {
+                if (_disableInput) return;
+                OnConfirmButtonClicked();
+            };
+            GameStart();
         }
 
         void GameStart()
@@ -56,14 +69,20 @@ namespace Dijkstra
             InitializeRoads();
             RunDijkstraAlgorithm(_graph, _startNode, out var distance, out var tracedVertex);
 
+            foreach (var nodeEnumse in tracedVertex)
+            {
+                Debug.Log(string.Join(",", nodeEnumse.Select(e => ((int)e).ToString()).ToArray()));
+            }
+
             _userSelectedNodes = new List<NodeEnum>();
             _bestRoute = tracedVertex[(int)_endNode].ToArray();
             string result = string.Join(" > ", tracedVertex[(int)_endNode].Select(e => ((int)e).ToString()).ToArray());
             Debug.Log($"Best Path: {result}");
 
-
-            _dijkstraUIManager.SetStage(_stageNumber, (int)_startNode);
-            StartCoroutine(SetTimer(30));
+            _dijkstraUIManager.SetStage(_stageNumber, (int)_endNode);
+            _dijkstraUIManager.SetSpeedText(_thiefSpeed, _policeSpeed);
+            OnNodeClicked(_startNode);
+            StartCoroutine(SetTimer(_time));
         }
 
         void InitializeRoads()
@@ -125,7 +144,11 @@ namespace Dijkstra
                 if (child is not null)
                 {
                     _nodeObjects.Add((NodeEnum)i, child.gameObject);
-                    child.GetComponent<Node>().OnNodeClicked += OnNodeClicked;
+                    child.GetComponent<Node>().OnNodeClicked += (node) =>
+                    {
+                        if (_disableInput) return;
+                        OnNodeClicked(node);
+                    };
                 }
                 else
                     Debug.Log($"{(NodeEnum)i}'s Object doesn't exist");
@@ -138,6 +161,19 @@ namespace Dijkstra
             _graph.AddEdge(_edges.ToArray());
         }
 
+        int GetWeight(NodeEnum from, NodeEnum to)
+        {
+            foreach (var edge in _edges)
+            {
+                if (edge.From == from && edge.To == to)
+                    return edge.Weight;
+                if (edge.From == to && edge.To == from)
+                    return edge.Weight;
+            }
+
+            return -1;
+        }
+
         void RunDijkstraAlgorithm(WeightedGraph graph, NodeEnum start, out int[] distance,
             out List<NodeEnum>[] tracedVertex)
         {
@@ -145,15 +181,13 @@ namespace Dijkstra
             tracedVertex = new List<NodeEnum>[length];
             for (int i = 0; i < length; i++)
                 tracedVertex[i] = new List<NodeEnum> { start, };
-            var weights = graph.GetWeights();
+            var weights = graph.GetWeightMatrix();
             distance = weights[(int)start];
-
             HashSet<NodeEnum> visitedVertex = new HashSet<NodeEnum> { start };
-
             NodeEnum minVertex = start;
+
             while (visitedVertex.Count < length)
             {
-                NodeEnum minVertexExceptForWhile = minVertex;
                 for (int node = 0, min = WeightedGraph.INF; node < length; node++)
                 {
                     if (visitedVertex.Contains((NodeEnum)node) || distance[node] > min) continue;
@@ -161,19 +195,33 @@ namespace Dijkstra
                     minVertex = (NodeEnum)node;
                 }
 
-                if (minVertex == minVertexExceptForWhile)
+                // 그래프 연결 끊김 (두 그룹 이상)
+                if (!visitedVertex.Add(minVertex))
                 {
                     Debug.LogError("No path exists, exit");
                     break;
                 }
 
-                visitedVertex.Add(minVertex);
-
                 for (int i = 0; i < length; i++)
                 {
-                    if (distance[i] < distance[(int)minVertex] + weights[(int)minVertex][i]) continue;
+                    if (distance[i] < distance[(int)minVertex] + weights[(int)minVertex][i])
+                        continue;
+
+                    if (distance[i] == distance[(int)minVertex] + weights[(int)minVertex][i])
+                    {
+                        // 자기 자신의 노드에 도착
+                        if (i == (int)minVertex)
+                            tracedVertex[i].Add(minVertex);
+                        // 아니면 동일 거리의 다른 경로이니 무시 (경로는 거리만 일치하면 괜찮음)
+                        continue;
+                    }
+
+                    // 거리 갱신이 필요할 경우
                     distance[i] = distance[(int)minVertex] + weights[(int)minVertex][i];
-                    tracedVertex[i].Add(minVertex);
+                    
+                    // tracedVertex의 다시 세팅
+                    tracedVertex[i].Clear();
+                    tracedVertex[i].AddRange(tracedVertex[(int)minVertex]);
                 }
             }
         }
@@ -186,20 +234,94 @@ namespace Dijkstra
 
         void OnNodeClicked(NodeEnum node)
         {
+            // check validity
+            if (_userSelectedNodes.Contains(node))
+                return;
+
+            if (_userSelectedNodes.Count > 0)
+            {
+                bool hasValidNode = _edges.Any(e =>
+                    (e.From == _userSelectedNodes.Last() && e.To == node)
+                    || (e.From == node && e.To == _userSelectedNodes.Last()));
+                if (_userSelectedNodes.Last() == node || !hasValidNode) return;
+            }
+
             _userSelectedNodes.Add(node);
             _dijkstraUIManager.SetUserPath(_userSelectedNodes.Select(e => (int)e).ToArray());
         }
 
         void OnConfirmButtonClicked()
         {
-            if (_userSelectedNodes.Count == _bestRoute.Length && _userSelectedNodes.SequenceEqual(_bestRoute))
+            if (_userSelectedNodes.Last() != _endNode)
             {
-                _dijkstraUIManager.StageWin();
+                LoadGameOverScene(GameFail.WrongWay);
+                return;
+            }
+
+            // Stop Everything And Execute Animation
+            StopAllCoroutines();
+            _disableInput = true;
+
+            List<Tuple<Vector3, int>> path = new();
+            for (int i = 1; i < _userSelectedNodes.Count; i++)
+            {
+                path.Add(new Tuple<Vector3, int>(_nodeObjects[_userSelectedNodes[i]].transform.position,
+                    GetWeight(_userSelectedNodes[i - 1], _userSelectedNodes[i])));
+            }
+
+            _thief.transform.position = _nodeObjects[_startNode].transform.position;
+            _thief.FollowPath(path.ToArray(), _thiefSpeed, PathCallback);
+
+            path.Clear();
+            for (int i = 1; i < _bestRoute.Length; i++)
+            {
+                path.Add(new Tuple<Vector3, int>(_nodeObjects[_bestRoute[i]].transform.position,
+                    GetWeight(_bestRoute[i - 1], _bestRoute[i])));
+            }
+
+            _police.transform.position = _nodeObjects[_startNode].transform.position;
+            _police.FollowPath(path.ToArray(), _policeSpeed, PathCallback, delay: _policeDelay);
+        }
+
+        // Police와 Thief의 위치를 이용하지 않음, 단순 논리로 계산
+        void PathCallback()
+        {
+            // Distance / Speed = Time
+            float policeMovementTime = CalculateTotalDistance(_bestRoute) / _policeSpeed;
+            float thiefMovementTime = CalculateTotalDistance(_userSelectedNodes.ToArray()) / _thiefSpeed;
+
+            // Delay 포함
+            if (thiefMovementTime <= (policeMovementTime + 1))
+            {
+                StageClear();
             }
             else
             {
-                SceneManager.LoadScene("DijkstraFailed");
+                LoadGameOverScene(GameFail.TooSlow);
             }
+        }
+
+        int CalculateTotalDistance(NodeEnum[] nodes)
+        {
+            int totalDistance = 0;
+            for (int i = 1; i < nodes.Length; i++)
+            {
+                totalDistance += GetWeight(nodes[i - 1], nodes[i]);
+            }
+
+            return totalDistance;
+        }
+
+        void StageClear()
+        {
+            _dijkstraUIManager.StageClear();
+        }
+
+        void LoadGameOverScene(GameFail fail)
+        {
+            PlayerPrefs.SetInt(StaticText.PlayerPrefGameOverStage, _stageNumber);
+            PlayerPrefs.SetInt(StaticText.PlayerPrefGameOverSign, (int)fail);
+            SceneManager.LoadScene(StaticText.DijkstraGameOverSceneName);
         }
 
         IEnumerator SetTimer(float time)
@@ -213,7 +335,7 @@ namespace Dijkstra
             }
 
             _timer = 0;
-            SceneManager.LoadScene("DijkstraTimeOver");
+            LoadGameOverScene(GameFail.TimeOver);
         }
     }
 }
