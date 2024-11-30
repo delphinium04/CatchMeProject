@@ -6,89 +6,64 @@ using UnityEngine.UI;
 
 namespace Dijkstra
 {
-    public class DijkstraUIManager : DijkstraUIBase
+    public class DijkstraUIManager : MonoBehaviour
     {
         public Action OnResetButtonClicked = null;
         public Action OnConfirmButtonClicked = null;
         public Action OnNextButtonClicked = null;
+        
+        [Header("For Game")]
+        public TMP_Text _userPathText;
+        public TMP_Text _timerText;
+        public TMP_Text _stageText;
+        public TMP_Text _targetNodeText;
+        public Button _resetButton;
+        public Button _confirmButton;
+        public Button _nextRoundButton;
+        public GameObject _resultPanel;
 
-        enum Texts
-        {
-            UserPathText,
-            TimerText,
-            StageText,
-            GoalNodeText,
-            PlayerText,
-            PoliceText
-        }
-
-        enum Buttons
-        {
-            ResetButton,
-            ConfirmButton,
-            NextRoundButton,
-        }
-
-        enum GameObjects
-        {
-            ResultPanel,
-        }
-
-        void Awake()
-        {
-            Bind<TMP_Text>(typeof(Texts));
-            Bind<Button>(typeof(Buttons));
-            Bind<GameObject>(typeof(GameObjects));
-        }
+        [Header("For Failed Scene")]
+        public Button _retryButton; 
 
         void Start()
         {
-            AddButtonListener();
-            if (Get<GameObject>((int)GameObjects.ResultPanel) != null)
-                Get<GameObject>((int)GameObjects.ResultPanel).SetActive(false);
+            _resultPanel?.SetActive(false);
+
+            if(_resetButton != null)
+                _resetButton.onClick.AddListener(() => OnResetButtonClicked?.Invoke()); 
+            if(_confirmButton != null)
+                _confirmButton.onClick.AddListener(() => OnConfirmButtonClicked?.Invoke());  
+            if(_nextRoundButton != null)
+                _nextRoundButton.onClick.AddListener(() => OnNextButtonClicked?.Invoke());
+            if(_retryButton != null)
+                _retryButton.onClick.AddListener(() => SceneManager.LoadScene("Dijkstra"));
         }
 
-        void AddButtonListener()
-        {
-            Button button;
-            if ((button = GetButton(Buttons.ResetButton)) != null)
-                button.onClick.AddListener(() => OnResetButtonClicked?.Invoke());
-            if ((button = GetButton(Buttons.ConfirmButton)) != null)
-                button.onClick.AddListener(() => OnConfirmButtonClicked?.Invoke());
-            if ((button = GetButton(Buttons.NextRoundButton)) != null)
-                button.onClick.AddListener(() => OnNextButtonClicked?.Invoke());
-        }
-
-        TMP_Text GetText(Texts texts) => Get<TMP_Text>((int)texts);
-        Button GetButton(Buttons buttons) => Get<Button>((int)buttons);
+        #region INGAME
 
         public void SetStage(int stageNumber, int targetNode)
         {
-            GetText(Texts.StageText).text = $"스테이지 {stageNumber}";
-            GetText(Texts.GoalNodeText).text = $": {targetNode}";
-        }
-
-        public void SetSpeedText(float thief, float police)
-        {
-            GetText(Texts.PoliceText).text = $"{police:F1}M/s";
-            GetText(Texts.PlayerText).text = $"{thief:F1}M/s";
+            _stageText.text = $"스테이지 {stageNumber}";
+            _targetNodeText.text = $"목표 도착점: {targetNode}";
         }
 
         public void SetUserPath(params int[] path)
         {
             string text = String.Join(" > ", path);
-            GetText(Texts.UserPathText).text = text;
+            _userPathText.text = text;
         }
 
         public void SetTimerText(float t)
         {
             string text = $"Timer: {t:F2}";
-            GetText(Texts.TimerText).text = text;
+            _timerText.text = text;
         }
 
-        public void StageClear()
+        public void StageWin()
         {
-            Get<GameObject>((int)GameObjects.ResultPanel).SetActive(true);
+            _resultPanel.SetActive(true);
         }
-    }
+
+        #endregion INGAME
+        }
 }
