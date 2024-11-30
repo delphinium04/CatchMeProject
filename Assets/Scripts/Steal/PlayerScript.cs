@@ -5,21 +5,21 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     public StealUiManager StealUiManager;
-    public float speed = 5f; //ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿ ¼Óµµ
+    public float speed = 5f; //í”Œë ˆì´ì–´ì˜ ì´ë™ ì†ë„
     private IStealManager gm;
-    //ÇÃ·¹ÀÌ¾î°¡ °¥ ¼ö ÀÖ´Â ¸Ê »çÀÌÁî Å©±â
+    //í”Œë ˆì´ì–´ê°€ ê°ˆ ìˆ˜ ìˆëŠ” ë§µ ì‚¬ì´ì¦ˆ í¬ê¸°
     public float maxX;
     public float maxY;
     public float minX;
     public float minY;
     public float next;
-    private bool isColliding = false; //»ç¶÷°ú Á¢ÃËÇØ ÀÖ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
+    private bool isColliding = false; //ì‚¬ëŒê³¼ ì ‘ì´‰í•´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
     private bool canMove = true;
 
-    private GameObject whocoll; //ºÎµúÈù »ç¶÷ÀÇ Á¤º¸
-    private SpriteRenderer sRen; //ÇÃ·¹ÀÌ¾îÀÇ ¹æÇâ¿¡ µû¶ó ¹Ù¶óº¸´Â ¹æÇâÀ» Á¤ÇÏ±â À§ÇØ
+    private GameObject whocoll; //ë¶€ë”ªíŒ ì‚¬ëŒì˜ ì •ë³´
+    private SpriteRenderer sRen; //í”Œë ˆì´ì–´ì˜ ë°©í–¥ì— ë”°ë¼ ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ì •í•˜ê¸° ìœ„í•´
 
-    public int stage; //³ªÁß¿¡ Àü¿ª º¯¼ö·Î ¹Ù²Ü ¿¹Á¤
+    public int stage; //ë‚˜ì¤‘ì— ì „ì—­ ë³€ìˆ˜ë¡œ ë°”ê¿€ ì˜ˆì •
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class PlayerScript : MonoBehaviour
             minY = -5f;
             next = 38f;
             gameManager = GameObject.Find("Steal1Manager");
-            gm = gameManager.GetComponent<Steal1ManagerScript>(); //°ÔÀÓ ¸Å´ÏÀúÀÇ ½ºÅ©¸³Æ® °¡Á®¿À±â
+            gm = gameManager.GetComponent<Steal1ManagerScript>(); //ê²Œì„ ë§¤ë‹ˆì €ì˜ ìŠ¤í¬ë¦½íŠ¸ ê°€ì ¸ì˜¤ê¸°
         }
         else if (stage == 2)
         {
@@ -43,7 +43,7 @@ public class PlayerScript : MonoBehaviour
             minY = -5f;
             next = 68f;
             gameManager = GameObject.Find("Steal2Manager");
-            gm = gameManager.GetComponent<Steal2ManagerScript>(); //°ÔÀÓ ¸Å´ÏÀúÀÇ ½ºÅ©¸³Æ® °¡Á®¿À±â
+            gm = gameManager.GetComponent<Steal2ManagerScript>(); //ê²Œì„ ë§¤ë‹ˆì €ì˜ ìŠ¤í¬ë¦½íŠ¸ ê°€ì ¸ì˜¤ê¸°
         }
         else if(stage == 3){
             maxX = 75f;
@@ -52,32 +52,32 @@ public class PlayerScript : MonoBehaviour
             minY = -5f;
             next = 74f;
             gameManager = GameObject.Find("Steal3Manager");
-            gm = gameManager.GetComponent<Steal3ManagerScript>(); //°ÔÀÓ ¸Å´ÏÀúÀÇ ½ºÅ©¸³Æ® °¡Á®¿À±â
+            gm = gameManager.GetComponent<Steal3ManagerScript>(); //ê²Œì„ ë§¤ë‹ˆì €ì˜ ìŠ¤í¬ë¦½íŠ¸ ê°€ì ¸ì˜¤ê¸°
         }
-        sRen = GetComponent<SpriteRenderer>(); //ÁÂ¿ì ¹İÀüÀ» À§ÇØ
+        sRen = GetComponent<SpriteRenderer>(); //ì¢Œìš° ë°˜ì „ì„ ìœ„í•´
     }
 
     void Update()
     {
-        if (isColliding && Input.GetKeyDown(KeyCode.F)) //ºÎµúÈù »óÅÂ¿¡¼­ fÅ°¸¦ ´­·¶À»¶§
+        if (isColliding && Input.GetKeyDown(KeyCode.F)) //ë¶€ë”ªíŒ ìƒíƒœì—ì„œ fí‚¤ë¥¼ ëˆŒë €ì„ë•Œ
         {
-            PeopleScript pS = whocoll.GetComponent<PeopleScript>(); //ºÎµúÈù »ç¶÷ÀÇ ½ºÅ©¸³Æ® °¡Á®¿À±â
-            canMove = false; // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ¸ØÃß±â
-            if (pS.item >= 0 && pS.item <= 10) // ¾Ë¸ÂÀº ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ°í
+            PeopleScript pS = whocoll.GetComponent<PeopleScript>(); //ë¶€ë”ªíŒ ì‚¬ëŒì˜ ìŠ¤í¬ë¦½íŠ¸ ê°€ì ¸ì˜¤ê¸°
+            canMove = false; // í”Œë ˆì´ì–´ ì›€ì§ì„ ë©ˆì¶”ê¸°
+            if (pS.item >= 0 && pS.item <= 10) // ì•Œë§ì€ ì•„ì´í…œì„ ê°€ì§€ê³  ìˆê³ 
             {
-                if (gm.currheavy + gm.heavy[pS.item] <= gm.maxbagsize) //°¡¹æ¿¡ °ø°£ÀÌ ÀÖ´Ù¸é
+                if (gm.currheavy + gm.heavy[pS.item] <= gm.maxbagsize) //ê°€ë°©ì— ê³µê°„ì´ ìˆë‹¤ë©´
                 {
-                    gm.showitem(pS.item); //»ç¶÷ÀÌ °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ º¸¿©ÁÖ±â
-                    StartCoroutine(WaitForYesOrNoButtonClick(pS.item)); //ÄÚ·çÆ¾ µé¾î°¡±â
+                    gm.showitem(pS.item); //ì‚¬ëŒì´ ê°€ì§€ê³  ìˆëŠ” ì•„ì´í…œ ë³´ì—¬ì£¼ê¸°
+                    StartCoroutine(WaitForYesOrNoButtonClick(pS.item)); //ì½”ë£¨í‹´ ë“¤ì–´ê°€ê¸°
                 }
                 else
                 {
-                    gm.ShowWhyCantSteal("°¡¹æ¿¡ µé¾î°¥ °ø°£ÀÌ ¾ø½À´Ï´Ù");
+                    gm.ShowWhyCantSteal("ê°€ë°©ì— ë“¤ì–´ê°ˆ ê³µê°„ì´ ì—†ìŠµë‹ˆë‹¤");
                     canMove = true;
                 }
             }
             else {
-                gm.ShowWhyCantSteal("ÈÉÄ¥ ¼ö ÀÖ´Â ¹°°ÇÀÌ ¾ø½À´Ï´Ù!");
+                gm.ShowWhyCantSteal("í›”ì¹  ìˆ˜ ìˆëŠ” ë¬¼ê±´ì´ ì—†ìŠµë‹ˆë‹¤!");
                 canMove = true;
             }
         }
@@ -91,15 +91,15 @@ public class PlayerScript : MonoBehaviour
                 canMove = !canMove;
                 StealUiManager.StageWin();
             }
-            // ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿ ½ºÅ©¸³Æ®
+            // í”Œë ˆì´ì–´ì˜ ì´ë™ ìŠ¤í¬ë¦½íŠ¸
             float h = Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
-            if (h < 0) //¿ŞÂÊ Å°¸¦ ´­·¶À»¶§
+            if (h < 0) //ì™¼ìª½ í‚¤ë¥¼ ëˆŒë €ì„ë•Œ
             {
-                sRen.flipX = true; //´ëÄª È°¼ºÈ­
+                sRen.flipX = true; //ëŒ€ì¹­ í™œì„±í™”
             }
             else if (h > 0)
-            { //¿À¸¥ÂÊ Å°¸¦ ´­·¶À»¶§
-                sRen.flipX = false; //´ëÄª ºñÈ°¼ºÈ­
+            { //ì˜¤ë¥¸ìª½ í‚¤ë¥¼ ëˆŒë €ì„ë•Œ
+                sRen.flipX = false; //ëŒ€ì¹­ ë¹„í™œì„±í™”
             }
 
             float v = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
@@ -111,94 +111,94 @@ public class PlayerScript : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other) //ºÎµúÇûÀ» ¶§
+    void OnTriggerEnter2D(Collider2D other) //ë¶€ë”ªí˜”ì„ ë•Œ
     {
         if (other.CompareTag("woman1"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman1");
         }
         else if (other.CompareTag("woman2"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman2");
         }
         else if (other.CompareTag("woman3"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman3");
         }
         else if (other.CompareTag("woman4"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman4");
         }
         else if (other.CompareTag("man1"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man1");
         }
         else if (other.CompareTag("man2"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man2");
         }
         else if (other.CompareTag("man3"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man3");
         }
         else if (other.CompareTag("man4"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man4");
         }
         else if (other.CompareTag("man5"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man5");
         }
         else if (other.CompareTag("man6"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man6");
         }
         else if (other.CompareTag("rich1"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("rich1");
         }
     }
 
-    void OnTriggerExit2D(Collider2D other) //¶³¾îÁ³À» ¶§
+    void OnTriggerExit2D(Collider2D other) //ë–¨ì–´ì¡Œì„ ë•Œ
     {
         if (other.CompareTag("woman1"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("woman2"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("woman3"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("woman4"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man1"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man2"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man2"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man3"))
         {
@@ -221,9 +221,9 @@ public class PlayerScript : MonoBehaviour
             isColliding = false;
         }
     }
-    IEnumerator WaitForYesOrNoButtonClick(int item) //¹öÆ°À» ´­·¯°ªÀÌ ¼³Á¤ µÉ¶§±îÁö ±â´Ù¸®´Â ÇÔ¼ö
+    IEnumerator WaitForYesOrNoButtonClick(int item) //ë²„íŠ¼ì„ ëˆŒëŸ¬ê°’ì´ ì„¤ì • ë ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¬ëŠ” í•¨ìˆ˜
     {
-        // ¹öÆ°ÀÌ Å¬¸¯µÉ ¶§±îÁö ±â´Ù¸²
+        // ë²„íŠ¼ì´ í´ë¦­ë  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¼
         while (!gm.yesorno.HasValue)
         {
             yield return null;
@@ -231,12 +231,12 @@ public class PlayerScript : MonoBehaviour
 
         if (gm.yesorno.Value)
         {
-            gm.getitem(item); // ¾ÆÀÌÅÛ ÈÉÄ¡±â
+            gm.getitem(item); // ì•„ì´í…œ í›”ì¹˜ê¸°
             PeopleScript pS = whocoll.GetComponent<PeopleScript>();
-            pS.item = -1; // ºÎµúÈù »ç¶÷Àº ¾ÆÀÌÅÛ ¾øÀ½
+            pS.item = -1; // ë¶€ë”ªíŒ ì‚¬ëŒì€ ì•„ì´í…œ ì—†ìŒ
         }
-        gm.hideitem(item); //¼û±â±â
+        gm.hideitem(item); //ìˆ¨ê¸°ê¸°
         canMove = true;
-        gm.yesorno = null; //ÄÚ·çÆ¾ °ª ÃÊ±âÈ­
+        gm.yesorno = null; //ì½”ë£¨í‹´ ê°’ ì´ˆê¸°í™”
     }
 }

@@ -6,11 +6,11 @@ public class PeopleScript : MonoBehaviour
 {
     public GameObject fkey;
     public ParticleSystem particle;
-    public int item;  //�÷��̾ � �������� ������ �ִ��� ������ ��ȣ
+    public int item;  //?÷???? ?? ???????? ?????? ????? ?????? ???
 
     void Start()
     {
-        fkey.SetActive(false); //fŰ �Ⱥ��̱�
+        fkey.SetActive(false); //f? ??????
     }
 
     // Update is called once per frame
@@ -19,19 +19,19 @@ public class PeopleScript : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other) //�ε����� ��
+    void OnTriggerEnter2D(Collider2D other) //?ε????? ??
     {
         if (other.CompareTag("Player"))
         {
-            fkey.SetActive(true); // Ȱ��ȭ  
+            fkey.SetActive(true); // ????  
         }
     }
 
-    void OnTriggerExit2D(Collider2D other) //�������� ��
+    void OnTriggerExit2D(Collider2D other) //???????? ??
     {
         if (other.CompareTag("Player"))
         {
-            fkey.SetActive(false); //��Ȱ��ȭ
+            fkey.SetActive(false); //??????
         }
     }
 

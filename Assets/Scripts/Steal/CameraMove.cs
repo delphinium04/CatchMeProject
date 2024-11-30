@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     GameObject player;
-    public float smoothSpeed = 0.125f; // ºÎµå·¯¿î Ä«¸Ş¶ó ÀÌµ¿À» À§ÇØ
+    public float smoothSpeed = 0.125f; // ë¶€ë“œëŸ¬ìš´ ì¹´ë©”ë¼ ì´ë™ì„ ìœ„í•´
     float maxMapX;
     float minMapX = 0f;
 
@@ -26,12 +26,12 @@ public class CameraMove : MonoBehaviour
         {
             maxMapX = 60f;
         }
-        this.player = GameObject.Find("´ëÇĞ»ı µµµÏ");
+        this.player = GameObject.Find("ëŒ€í•™ìƒ ë„ë‘‘");
     }
 
-    void FixedUpdate() //Lerp ÇÔ¼ö ¶§¹®¿¡ 
+    void FixedUpdate() //Lerp í•¨ìˆ˜ ë•Œë¬¸ì— 
     {
-        //xÃàÀ¸·Î¸¸ Ä«¸Ş¶ó ¿òÁ÷ÀÓ
+        //xì¶•ìœ¼ë¡œë§Œ ì¹´ë©”ë¼ ì›€ì§ì„
         float playerPosX = Mathf.Clamp(player.transform.position.x, minMapX, maxMapX);
         
         Vector3 desiredPosition = new Vector3(playerPosX, transform.position.y, transform.position.z); 

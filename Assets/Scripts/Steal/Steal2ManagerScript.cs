@@ -24,9 +24,9 @@ public class Steal2ManagerScript : MonoBehaviour, IStealManager
     private Button[] itembuttons;
     private Image[] itemimages;
 
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI bagSizeText;
-    public TextMeshProUGUI whycantsteal;
+    public TMP_Text timerText;
+    public TMP_Text bagSizeText;
+    public TMP_Text whycantsteal;
 
     private float time;
     private int invokeCount = 0;
@@ -224,8 +224,8 @@ public class Steal2ManagerScript : MonoBehaviour, IStealManager
     {
         time -= Time.deltaTime;
         int seconds = Mathf.FloorToInt(time);
-        timerText.text = "���� �ð� : " + seconds.ToString();
-        bagSizeText.text = "���� : " + currheavy.ToString() + "/" + maxbagsize.ToString();
+        timerText.text = $"남은 시간 : {seconds}";
+        bagSizeText.text = $"가방 : {currheavy} / {maxbagsize}";
 
         if (time <= 0)
         {

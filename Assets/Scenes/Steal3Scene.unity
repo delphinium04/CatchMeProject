@@ -411,7 +411,6 @@ MonoBehaviour:
   timerText: {fileID: 1864634330}
   bagSizeText: {fileID: 1832904664}
   whycantsteal: {fileID: 1393968426}
-  glowMaterial: {fileID: 0}
   bag_item: 1
 --- !u!1 &99842480
 GameObject:
@@ -7454,10 +7453,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -7679,10 +7678,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -13658,11 +13657,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a3cd148e44d47418cfeefca6d4b52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StealUiManager: {fileID: 0}
   speed: 5
   maxX: 40
   maxY: -0.8
   minX: -13
   minY: -5
+  next: 0
   stage: 3
 --- !u!1 &1033935406
 GameObject:
@@ -13712,10 +13713,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -24980,7 +24981,7 @@ MonoBehaviour:
   m_text: "\uAC00\uBC29\uC5D0 \uB4E4\uC5B4\uAC08 \uACF5\uAC04\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c61022c3f33f63c4298b2b71c59c3c1c, type: 2}
-  m_sharedMaterial: {fileID: -8125521822130182595, guid: c61022c3f33f63c4298b2b71c59c3c1c, type: 2}
+  m_sharedMaterial: {fileID: 3966026348823706769, guid: c61022c3f33f63c4298b2b71c59c3c1c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -35783,7 +35784,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 686.1, y: -89.7}
+  m_AnchoredPosition: {x: 686.1, y: -89.70001}
   m_SizeDelta: {x: 250, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1832904664
