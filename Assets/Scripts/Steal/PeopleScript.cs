@@ -5,12 +5,12 @@ using UnityEngine;
 public class PeopleScript : MonoBehaviour
 {
     public GameObject fkey;
-    public int item;  //ÇÃ·¹ÀÌ¾î°¡ ¾î¶² ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ´ÂÁö ¾ÆÀÌÅÛ ¹øÈ£
+    public ParticleSystem particle;
+    public int item;  //ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£
 
     void Start()
     {
-        fkey.SetActive(false); //fÅ° ¾Èº¸ÀÌ±â
-
+        fkey.SetActive(false); //fÅ° ï¿½Èºï¿½ï¿½Ì±ï¿½
     }
 
     // Update is called once per frame
@@ -19,19 +19,19 @@ public class PeopleScript : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other) //ºÎµúÇûÀ» ¶§
+    void OnTriggerEnter2D(Collider2D other) //ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     {
         if (other.CompareTag("Player"))
         {
-            fkey.SetActive(true); // È°¼ºÈ­
+            fkey.SetActive(true); // È°ï¿½ï¿½È­  
         }
     }
 
-    void OnTriggerExit2D(Collider2D other) //¶³¾îÁ³À» ¶§
+    void OnTriggerExit2D(Collider2D other) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     {
         if (other.CompareTag("Player"))
         {
-            fkey.SetActive(false); //ºñÈ°¼ºÈ­
+            fkey.SetActive(false); //ï¿½ï¿½È°ï¿½ï¿½È­
         }
     }
 

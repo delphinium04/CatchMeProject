@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - man1
+  - man2
+  - woman2
+  - man3
+  - woman1
+  - woman3
+  - woman4
+  - man4
+  - man5
+  - man6
+  - rich
   layers:
   - Default
   - TransparentFX
