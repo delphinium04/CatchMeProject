@@ -7,17 +7,17 @@ using TMPro;
 public class GameManagerScript : MonoBehaviour
 {
 
-    public GameObject[] people; //»ç¶÷µé
+    public GameObject[] people; //ì‚¬ëŒë“¤
     //0: woman1, 1: woman2, 2: woman3, 3: man1, 4: man2, 5: man3 
-    private List<int> whoHave; //»ç¶÷ÀÇ ÀÎµ¦½º ¹øÈ£¿¡µû¶ó ¾î¶² ¾ÆÀÌÅÛ(¹øÈ£)°¡ ´ã°ÜÀÖ´Â ¸®½ºÆ® 
+    private List<int> whoHave; //ì‚¬ëŒì˜ ì¸ë±ìŠ¤ ë²ˆí˜¸ì—ë”°ë¼ ì–´ë–¤ ì•„ì´í…œ(ë²ˆí˜¸)ê°€ ë‹´ê²¨ìˆëŠ” ë¦¬ìŠ¤íŠ¸ 
 
-    //0: Áö°©, 1: ÇÚµå¹é, 2: ¼­·ù°¡¹æ, 3: ·çºñ, 4: ¿¡¸Ş¶öµå, 5: ´ÙÀÌ¾Æ
-    public List<int> heavy; //¹°°ÇµéÀÇ ¹«°Ô°¡ ´ã°ÜÀÖ´Â ¸®½ºÆ®
-    public List<int> price; //¹°°ÇµéÀÇ °¡°İÀÌ ´ã°ÜÀÖ´Â ¸®½ºÆ®
+    //0: ì§€ê°‘, 1: í•¸ë“œë°±, 2: ì„œë¥˜ê°€ë°©, 3: ë£¨ë¹„, 4: ì—ë©”ë„ë“œ, 5: ë‹¤ì´ì•„
+    public List<int> heavy; //ë¬¼ê±´ë“¤ì˜ ë¬´ê²Œê°€ ë‹´ê²¨ìˆëŠ” ë¦¬ìŠ¤íŠ¸
+    public List<int> price; //ë¬¼ê±´ë“¤ì˜ ê°€ê²©ì´ ë‹´ê²¨ìˆëŠ” ë¦¬ìŠ¤íŠ¸
 
-    public List<int> curritem; //ÇÃ·¹ÀÌ¾î°¡ ÇöÀç °®°í ÀÖ´Â ¾ÆÀÌÅÛ ¸®½ºÆ®
-    public int currheavy; //ÇöÀç ÇÃ·¹ÀÌ¾î°¡ °¡Áö°í ÀÖ´Â ¹°°ÇÀÇ ÃÑ¹«°Ô
-    public int maxbagsize; //°¡¹æÀÇ ÃÖ´ë Å©±â
+    public List<int> curritem; //í”Œë ˆì´ì–´ê°€ í˜„ì¬ ê°–ê³  ìˆëŠ” ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸
+    public int currheavy; //í˜„ì¬ í”Œë ˆì´ì–´ê°€ ê°€ì§€ê³  ìˆëŠ” ë¬¼ê±´ì˜ ì´ë¬´ê²Œ
+    public int maxbagsize; //ê°€ë°©ì˜ ìµœëŒ€ í¬ê¸°
 
     public Canvas itemCanvas;
     public Canvas UiCanvas;
@@ -29,12 +29,12 @@ public class GameManagerScript : MonoBehaviour
     public TextMeshProUGUI bagSizeText;
     private float time;
 
-    public bool? yesorno = null; //bool? Å¸ÀÔÀº true false NULLÀÇ °ªÀ» °¡Áú ¼ö ÀÖÀ½
+    public bool? yesorno = null; //bool? íƒ€ì…ì€ true false NULLì˜ ê°’ì„ ê°€ì§ˆ ìˆ˜ ìˆìŒ
 
     void Awake()
     {
-        send_item(); // »ç¶÷µé¿¡°Ô ¾ÆÀÌÅÛ º¸³»±â
-        set_item_ph(); //¾ÆÀÌÅÛÀÇ °¡°İ°ú ¹«°Ô ¼³Á¤ÇØ¼­ ¸®½ºÆ®¿¡ ³Ö±â
+        send_item(); // ì‚¬ëŒë“¤ì—ê²Œ ì•„ì´í…œ ë³´ë‚´ê¸°
+        set_item_ph(); //ì•„ì´í…œì˜ ê°€ê²©ê³¼ ë¬´ê²Œ ì„¤ì •í•´ì„œ ë¦¬ìŠ¤íŠ¸ì— ë„£ê¸°
 
         curritem = new List<int>();
         maxbagsize = 10;
@@ -80,14 +80,14 @@ public class GameManagerScript : MonoBehaviour
             }
             if (index != -1)
             {
-                button.onClick.AddListener(() => OnButtonClick(index)); //ÀÎµ¦½º¿¡ ÇØ´çÇÏ´Â ¹öÆ° Å¬¸¯ ³Ö±â
+                button.onClick.AddListener(() => OnButtonClick(index)); //ì¸ë±ìŠ¤ì— í•´ë‹¹í•˜ëŠ” ë²„íŠ¼ í´ë¦­ ë„£ê¸°
                 Color color = image.color;
-                color.a = 0.5f; // Åõ¸íµµ¸¦ 50%·Î ¼³Á¤
+                color.a = 0.5f; // íˆ¬ëª…ë„ë¥¼ 50%ë¡œ ì„¤ì •
                 image.color = color;
             }
         }
         Transform[] setUiTransform = new Transform[UiCanvas.transform.childCount];
-        for (int i = 0; i < UiTransform.Length; i++)//¿øÇÏ´Â ¼ø¼­´ë·Î ³Ö±â À§ÇØ
+        for (int i = 0; i < UiTransform.Length; i++)//ì›í•˜ëŠ” ìˆœì„œëŒ€ë¡œ ë„£ê¸° ìœ„í•´
         {
             Transform ui = UiTransform[i];
             int index = -1;
@@ -135,59 +135,60 @@ public class GameManagerScript : MonoBehaviour
                     setUiTransform[index] = ui;
                     break;
             }
-            if(index >= 0 && index <= 6) //ÀÌ¹ÌÁö ¾ÆÀÌÅÛÀÏ °æ¿ì
+            if(index >= 0 && index <= 6)  //ì´ë¯¸ì§€ ì•„ì´í…œì¼ ê²½ìš°
             {
                 Image Uiitemimage = ui.GetComponent<Image>();
                 Uiitemimage.enabled = false;
             }
-            else if (index == 7) //ÅØ½ºÆ® ÀÏ¶§
+            else if (index == 7) //í…ìŠ¤íŠ¸ ì¼ë•Œ
             {
                 TextMeshProUGUI stillornot = ui.GetComponent<TextMeshProUGUI>();
                 stillornot.enabled = false;
             }
-            else if (index == 8)//½ºÆ¿ ¹öÆ°
+            else if (index == 8)//ìŠ¤í‹¸ ë²„íŠ¼
             {
                 TextMeshProUGUI yestext = ui.GetComponentInChildren<TextMeshProUGUI>();
                 yestext.enabled = false;
 
-                Image yesImage = ui.GetComponent<Image>(); // ¹öÆ° ÀÌ¹ÌÁö ¼û±â±â
+                Image yesImage = ui.GetComponent<Image>(); // ë²„íŠ¼ ì´ë¯¸ì§€ ìˆ¨ê¸°ê¸°
                 yesImage.enabled = false;
 
                 Button yesButton = ui.GetComponent<Button>();
                 yesButton.onClick.AddListener(() => OnButtonClickYesOrNo(true));
                 yesButton.interactable = false;
             }
-            else if (index == 9) //¾Æ´Ï¿À ¹öÆ°
+            else if (index == 9) //ì•„ë‹ˆì˜¤ ë²„íŠ¼
             {
                 TextMeshProUGUI notext = ui.GetComponentInChildren<TextMeshProUGUI>();
                 notext.enabled = false;
 
-                Image noImage = ui.GetComponent<Image>(); // ¹öÆ° ÀÌ¹ÌÁö ¼û±â±â
+                Image noImage = ui.GetComponent<Image>(); // ë²„íŠ¼ ì´ë¯¸ì§€ ìˆ¨ê¸°ê¸°
                 noImage.enabled = false;
 
-                Button noButton = ui.GetComponent<Button>(); //¹öÆ° ¼û±â±â
+                Button noButton = ui.GetComponent<Button>(); //ë²„íŠ¼ ìˆ¨ê¸°ê¸°
                 noButton.onClick.AddListener(() => OnButtonClickYesOrNo(false));
                 noButton.interactable = false;
-            }  
+            }
         }
         UiTransform = setUiTransform;
     }
 
 
-        //if (bag_item) { ¹è³¶ ¾ÆÀÌÅÛÀ» °®°í ÀÖ´Ù¸é (boolÇü)
-        //int num = bag_Algorithm(heavy, price, maxbagsize); ¹è³¶ ¾Ë°í¸®ÁòÀ¸·Î ÇÃ·¹ÀÌ¾î°¡ °¡Á®¾ß µÇ´Â ¾ÆÀÌÅÛ ¹øÈ£µéÀ» °¡Á®¿È
-        //if(num == whoHave[i]);¿¡ ÇØ´çÇÏ´Â »ç¶÷ ºû³ª±â
+        //if (bag_item) { ë°°ë‚­ ì•„ì´í…œì„ ê°–ê³  ìˆë‹¤ë©´ (boolí˜•)
+        //int num = bag_Algorithm(heavy, price, maxbagsize); ë°°ë‚­ ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ í”Œë ˆì´ì–´ê°€ ê°€ì ¸ì•¼ ë˜ëŠ” ì•„ì´í…œ ë²ˆí˜¸ë“¤ì„ ê°€ì ¸ì˜´
+        //if(num == whoHave[i]);ì— í•´ë‹¹í•˜ëŠ” ì‚¬ëŒ ë¹›ë‚˜ê¸°
         //bag_item = false;
 
     void Update()
     {
         time -= Time.deltaTime;
         int seconds = Mathf.FloorToInt(time);
-        timerText.text = "³²Àº ½Ã°£ : " + seconds.ToString();
-        bagSizeText.text = "°¡¹æ : " + currheavy.ToString() + "/" + maxbagsize.ToString();
+        timerText.text = "ë‚¨ì€ ì‹œê°„ : " + seconds.ToString();
+        bagSizeText.text = "ê°€ë°© : " + currheavy.ToString() + "/" + maxbagsize.ToString();
     }
 
-    void set_item_ph() { //¾ÆÀÌÅÛµéÀÇ °¡°İ°ú ¹«°Ô¸¦ ¼¼ÆÃÇÏ´Â ÇÔ¼ö
+    void set_item_ph()
+    { //ì•„ì´í…œë“¤ì˜ ê°€ê²©ê³¼ ë¬´ê²Œë¥¼ ì„¸íŒ…í•˜ëŠ” í•¨ìˆ˜
         heavy = new List<int>();
         price = new List<int>();
         heavy.Add(1);
@@ -203,7 +204,7 @@ public class GameManagerScript : MonoBehaviour
         price.Add(7);
         price.Add(10);
     }
-    void Shuffle(int[] array) //¹è¿­À» ·£´ıÀ¸·Î ¼¯´Â ÇÔ¼ö 
+    void Shuffle(int[] array) //ë°°ì—´ì„ ëœë¤ìœ¼ë¡œ ì„ëŠ” í•¨ìˆ˜ 
     {
         for (int i = 0; i < array.Length; i++)
         {
@@ -213,7 +214,8 @@ public class GameManagerScript : MonoBehaviour
             array[randomIndex] = temp;
         }
     }
-    void send_item() { //°ÔÀÓ ½ÃÀÛ½Ã ·£´ıÀ¸·Î »ç¶÷µé¿¡°Ô ¾ÆÀÌÅÛÀ» ÁÖ´Â º¯¼ö
+    void send_item()
+    { //ê²Œì„ ì‹œì‘ì‹œ ëœë¤ìœ¼ë¡œ ì‚¬ëŒë“¤ì—ê²Œ ì•„ì´í…œì„ ì£¼ëŠ” ë³€ìˆ˜
         int[] numbers = new int[people.Length];
         for (int i = 0; i < numbers.Length; i++)
         {
@@ -234,7 +236,7 @@ public class GameManagerScript : MonoBehaviour
             }
             else
             {
-                Debug.LogError("PeopleÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+                Debug.LogError("Peopleì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             }
         }
     }
@@ -261,7 +263,7 @@ public class GameManagerScript : MonoBehaviour
         noImage.enabled = true;
         notext.enabled = true;
         Uiitemimage.enabled = true;
-        //º¸¿©ÁÖ±â
+        //ë³´ì—¬ì£¼ê¸°
     }
     public void hiddeitem(int item)
     {
@@ -287,28 +289,28 @@ public class GameManagerScript : MonoBehaviour
         noImage.enabled = false;
         notext.enabled = false;
         Uiitemimage.enabled = false;
-        //¼û±â±â
+        //ìˆ¨ê¸°ê¸°
     }
-    public void getitem(int item) //¾ÆÀÌÅÛ ¾ò±â
+    public void getitem(int item) //ì•„ì´í…œ ì–»ê¸°
     {
-        curritem.Add(item); //ÇöÀç °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ ¸®½ºÆ®¿¡ Ãß°¡
-        currheavy += heavy[item]; //¹«°Ô Ãß°¡
-        itembuttons[item].interactable = true; //ÇØ´ç ¾ÆÀÌÅÛ ¹öÆ° È°¼ºÈ­
+        curritem.Add(item); //í˜„ì¬ ê°€ì§€ê³  ìˆëŠ” ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
+        currheavy += heavy[item]; //ë¬´ê²Œ ì¶”ê°€
+        itembuttons[item].interactable = true; //í•´ë‹¹ ì•„ì´í…œ ë²„íŠ¼ í™œì„±í™”
         Color color = itemimages[item].color;
-        color.a = 1f; // Åõ¸íµµ¸¦ 100%·Î ¼³Á¤
+        color.a = 1f; // íˆ¬ëª…ë„ë¥¼ 100%ë¡œ ì„¤ì •
         itemimages[item].color = color;
     }
-    void OnButtonClick(int item)  // ¾ÆÀÌÅÛ¿¡ ÇØ´çÇÏ´Â ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ¹ö¸®±â
+    void OnButtonClick(int item)  // ì•„ì´í…œì— í•´ë‹¹í•˜ëŠ” ë²„íŠ¼ì„ í´ë¦­í–ˆì„ë•Œ ë²„ë¦¬ê¸°
     {
-        for (int i = 0; i < curritem.Count; i++) 
+        for (int i = 0; i < curritem.Count; i++)
         {
-            if (curritem[i] == item) //ÇöÀç °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ Áß¿¡ Å¬¸¯ÇÑ ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é
+            if (curritem[i] == item) //í˜„ì¬ ê°€ì§€ê³  ìˆëŠ” ì•„ì´í…œ ì¤‘ì— í´ë¦­í•œ ì•„ì´í…œì´ ìˆë‹¤ë©´
             {
-                curritem.Remove(item); //ÇØ´ç ¾ÆÀÌÅÛ »èÁ¦
-                itembuttons[item].interactable = false; // ÇØ´ç ¾ÆÀÌÅÛ ¹öÆ° ºñÈ°¼ºÈ­
+                curritem.Remove(item); //í•´ë‹¹ ì•„ì´í…œ ì‚­ì œ
+                itembuttons[item].interactable = false; // í•´ë‹¹ ì•„ì´í…œ ë²„íŠ¼ ë¹„í™œì„±í™”
                 currheavy -= heavy[item];
                 Color color = itemimages[item].color;
-                color.a = 0.5f; // Åõ¸íµµ¸¦ 50%·Î ¼³Á¤
+                color.a = 0.5f; // íˆ¬ëª…ë„ë¥¼ 50%ë¡œ ì„¤ì •
                 itemimages[item].color = color;
             }
         }
@@ -317,9 +319,9 @@ public class GameManagerScript : MonoBehaviour
         yesorno = result;
 
     }
-    IEnumerator WaitForYesOrNoButtonClick() //¹öÆ°À» ´­·¯°ªÀÌ ¼³Á¤ µÉ¶§±îÁö ±â´Ù¸®´Â ÇÔ¼ö
-     {
-        // ¹öÆ°ÀÌ Å¬¸¯µÉ ¶§±îÁö ±â´Ù¸²
+    IEnumerator WaitForYesOrNoButtonClick() //ë²„íŠ¼ì„ ëˆŒëŸ¬ê°’ì´ ì„¤ì • ë ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¬ëŠ” í•¨ìˆ˜
+    {
+        // ë²„íŠ¼ì´ í´ë¦­ë  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¼
         while (yesorno == null)
         {
             yield return null;

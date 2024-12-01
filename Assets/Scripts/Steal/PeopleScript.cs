@@ -5,11 +5,11 @@ using UnityEngine;
 public class PeopleScript : MonoBehaviour
 {
     public GameObject fkey;
-    public int item;  //ÇÃ·¹ÀÌ¾î°¡ ¾î¶² ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ´ÂÁö ¾ÆÀÌÅÛ ¹øÈ£
+    public int item;  //í”Œë ˆì´ì–´ê°€ ì–´ë–¤ ì•„ì´í…œì„ ê°€ì§€ê³  ìˆëŠ”ì§€ ì•„ì´í…œ ë²ˆí˜¸
 
     void Start()
     {
-        fkey.SetActive(false); //fÅ° ¾Èº¸ÀÌ±â
+        fkey.SetActive(false); //fí‚¤ ì•ˆë³´ì´ê¸°
 
     }
 
@@ -19,19 +19,19 @@ public class PeopleScript : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other) //ºÎµúÇûÀ» ¶§
+    void OnTriggerEnter2D(Collider2D other) //ë¶€ë”ªí˜”ì„ ë•Œ
     {
         if (other.CompareTag("Player"))
         {
-            fkey.SetActive(true); // È°¼ºÈ­
+            fkey.SetActive(true); // í™œì„±í™”
         }
     }
 
-    void OnTriggerExit2D(Collider2D other) //¶³¾îÁ³À» ¶§
+    void OnTriggerExit2D(Collider2D other) //ë–¨ì–´ì¡Œì„ ë•Œ
     {
         if (other.CompareTag("Player"))
         {
-            fkey.SetActive(false); //ºñÈ°¼ºÈ­
+            fkey.SetActive(false); //ë¹„í™œì„±í™”
         }
     }
 

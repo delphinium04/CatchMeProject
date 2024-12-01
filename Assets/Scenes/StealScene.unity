@@ -275,6 +275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 99758235}
   - component: {fileID: 99758236}
+  - component: {fileID: 99758237}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -325,6 +326,18 @@ MonoBehaviour:
   UiCanvas: {fileID: 690210519}
   timerText: {fileID: 1864634330}
   bagSizeText: {fileID: 1832904664}
+--- !u!114 &99758237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99758234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d21aed2349fca458f135b7c0c2633b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &151871951
 GameObject:
   m_ObjectHideFlags: 0

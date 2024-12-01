@@ -9,7 +9,7 @@ public class ItemScript : MonoBehaviour
 
     void Start()
     {
-        GameObject player = GameObject.Find("´ëÇĞ»ı µµµÏ");
+        GameObject player = GameObject.Find("ëŒ€í•™ìƒ ë„ë‘‘");
     }
 
     // Update is called once per frame

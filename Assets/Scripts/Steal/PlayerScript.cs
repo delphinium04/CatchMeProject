@@ -1,70 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
 
-    public float speed = 5f; //ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿ ¼Óµµ
+    public float speed = 5f; //í”Œë ˆì´ì–´ì˜ ì´ë™ ì†ë„
     private GameObject gameManager;
     private GameManagerScript gm;
-    //ÇÃ·¹ÀÌ¾î°¡ °¥ ¼ö ÀÖ´Â ¸Ê »çÀÌÁî Å©±â
+    //í”Œë ˆì´ì–´ê°€ ê°ˆ ìˆ˜ ìˆëŠ” ë§µ ì‚¬ì´ì¦ˆ í¬ê¸°
     public float maxX = 40f;
     public float maxY = -0.8f;
     public float minX = -13f;
     public float minY = -5f;
-    private bool isColliding = false; //»ç¶÷°ú Á¢ÃËÇØ ÀÖ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
+    private bool isColliding = false; //ì‚¬ëŒê³¼ ì ‘ì´‰í•´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
     private bool canMove = true;
-
-    private GameObject whocoll; //ºÎµúÈù »ç¶÷ÀÇ Á¤º¸
-    private SpriteRenderer sRen; //ÇÃ·¹ÀÌ¾îÀÇ ¹æÇâ¿¡ µû¶ó ¹Ù¶óº¸´Â ¹æÇâÀ» Á¤ÇÏ±â À§ÇØ
+    
+    private GameObject whocoll; //ë¶€ë”ªíŒ ì‚¬ëŒì˜ ì •ë³´
+    private SpriteRenderer sRen; //í”Œë ˆì´ì–´ì˜ ë°©í–¥ì— ë”°ë¼ ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ì •í•˜ê¸° ìœ„í•´
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager");
-        gm = gameManager.GetComponent<GameManagerScript>(); //°ÔÀÓ ¸Å´ÏÀúÀÇ ½ºÅ©¸³Æ® °¡Á®¿À±â
+        gm = gameManager.GetComponent<GameManagerScript>(); //ê²Œì„ ë§¤ë‹ˆì €ì˜ ìŠ¤í¬ë¦½íŠ¸ ê°€ì ¸ì˜¤ê¸°
         sRen = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        if (isColliding && Input.GetKeyDown(KeyCode.F)) //ºÎµúÈù »óÅÂ¿¡¼­ fÅ°¸¦ ´­·¶À»¶§
+        if (isColliding && Input.GetKeyDown(KeyCode.F)) //ë¶€ë”ªíŒ ìƒíƒœì—ì„œ fí‚¤ë¥¼ ëˆŒë €ì„ë•Œ
         {
-            PeopleScript pS = whocoll.GetComponent<PeopleScript>(); //ºÎµúÈù »ç¶÷ÀÇ ½ºÅ©¸³Æ® °¡Á®¿À±â
-            canMove = false; // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ¸ØÃß±â
-            if (pS.item >= 0 && pS.item <= 5) // ¾Ë¸ÂÀº ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ°í
+            PeopleScript pS = whocoll.GetComponent<PeopleScript>(); //ë¶€ë”ªíŒ ì‚¬ëŒì˜ ìŠ¤í¬ë¦½íŠ¸ ê°€ì ¸ì˜¤ê¸°
+            canMove = false; // í”Œë ˆì´ì–´ ì›€ì§ì„ ë©ˆì¶”ê¸°
+            if (pS.item >= 0 && pS.item <= 5) // ì•Œë§ì€ ì•„ì´í…œì„ ê°€ì§€ê³  ìˆê³ 
             {
-                if (gm.currheavy + gm.heavy[pS.item] <= gm.maxbagsize) //°¡¹æ¿¡ °ø°£ÀÌ ÀÖ´Ù¸é
+                if (gm.currheavy + gm.heavy[pS.item] <= gm.maxbagsize) //ê°€ë°©ì— ê³µê°„ì´ ìˆë‹¤ë©´
                 {
-                    gm.showitem(pS.item); //»ç¶÷ÀÌ °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ º¸¿©ÁÖ±â
-                    StartCoroutine(WaitForYesOrNoButtonClick(pS.item)); //ÄÚ·çÆ¾ µé¾î°¡±â
+                    gm.showitem(pS.item); //ì‚¬ëŒì´ ê°€ì§€ê³  ìˆëŠ” ì•„ì´í…œ ë³´ì—¬ì£¼ê¸°
+                    StartCoroutine(WaitForYesOrNoButtonClick(pS.item)); //ì½”ë£¨í‹´ ë“¤ì–´ê°€ê¸°
                 }
                 else
                 {
-                    Debug.Log("°¡¹æ¿¡ µé¾î°¥ °ø°£ÀÌ ¾ø½À´Ï´Ù!");
+                    Debug.Log("ê°€ë°©ì— ë“¤ì–´ê°ˆ ê³µê°„ì´ ì—†ìŠµë‹ˆë‹¤!");
                     canMove = true;
                 }
             }
-            else {
-                Debug.Log("ÈÉÄ¥ ¼ö ÀÖ´Â ¹°°ÇÀÌ ¾ø½À´Ï´Ù!");
+            else
+            {
+                Debug.Log("í›”ì¹  ìˆ˜ ìˆëŠ” ë¬¼ê±´ì´ ì—†ìŠµë‹ˆë‹¤!");
                 canMove = true;
             }
         }
+        CheckPlayerPosition(); //ìŠ¤í…Œì´ì§€ ì¢…ë£Œ ê°ì§€ í•¨ìˆ˜(ì¶”ê°€)
     }
-
+    public void SaveAndChangeScene()//ë°ì´í„° ì €ì¥ ë° ì”¬ ì „í™˜(ì¶”ê°€)
+    {
+        GameDataManager.instance.SaveData(gm.curritem, gm.price);
+        SceneManager.LoadScene("StoreScene"); // ë‹¤ìŒ ì”¬ìœ¼ë¡œ ì´ë™  
+    }
+    void CheckPlayerPosition() //ìŠ¤í…Œì´ì§€ ì¢…ë£Œ ê°ì§€ í•¨ìˆ˜(ì¶”ê°€)
+    {
+        if (transform.position.x >= maxX)
+        {
+            SaveAndChangeScene();
+        }
+    }
     void FixedUpdate()
     {
         if (canMove)
         {
-            // ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿ ½ºÅ©¸³Æ®
+            // í”Œë ˆì´ì–´ì˜ ì´ë™ ìŠ¤í¬ë¦½íŠ¸
             float h = Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
-            if (h < 0) //¿ŞÂÊ Å°¸¦ ´­·¶À»¶§
+            if (h < 0) //ì™¼ìª½ í‚¤ë¥¼ ëˆŒë €ì„ë•Œ
             {
-                sRen.flipX = true; //´ëÄª È°¼ºÈ­
+                sRen.flipX = true; //ëŒ€ì¹­ í™œì„±í™”
             }
             else if (h > 0)
-            { //¿À¸¥ÂÊ Å°¸¦ ´­·¶À»¶§
-                sRen.flipX = false; //´ëÄª ºñÈ°¼ºÈ­
+            { //ì˜¤ë¥¸ìª½ í‚¤ë¥¼ ëˆŒë €ì„ë•Œ
+                sRen.flipX = false; //ëŒ€ì¹­ ë¹„í™œì„±í™”
             }
 
             float v = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
@@ -76,70 +91,70 @@ public class PlayerScript : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other) //ºÎµúÇûÀ» ¶§
+    void OnTriggerEnter2D(Collider2D other) //ë¶€ë”ªí˜”ì„ ë•Œ
     {
         if (other.CompareTag("woman1"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman1");
         }
         else if (other.CompareTag("woman2"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman2");
         }
         else if (other.CompareTag("woman3"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("woman3");
         }
         else if (other.CompareTag("man1"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man1");
         }
         else if (other.CompareTag("man2"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man2");
         }
         else if (other.CompareTag("man3"))
         {
-            isColliding = true; //ºÎµúÈù »óÅÂ È°¼ºÈ­
+            isColliding = true; //ë¶€ë”ªíŒ ìƒíƒœ í™œì„±í™”
             whocoll = GameObject.Find("man3");
         }
     }
 
-    void OnTriggerExit2D(Collider2D other) //¶³¾îÁ³À» ¶§
+    void OnTriggerExit2D(Collider2D other) //ë–¨ì–´ì¡Œì„ ë•Œ
     {
         if (other.CompareTag("woman1"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("woman2"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("woman3"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man1"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man2"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
         else if (other.CompareTag("man2"))
         {
-            isColliding = false; //ºÎµúÈù »óÅÂ ºñÈ°¼ºÈ­
+            isColliding = false; //ë¶€ë”ªíŒ ìƒíƒœ ë¹„í™œì„±í™”
         }
     }
-    IEnumerator WaitForYesOrNoButtonClick(int item) //¹öÆ°À» ´­·¯°ªÀÌ ¼³Á¤ µÉ¶§±îÁö ±â´Ù¸®´Â ÇÔ¼ö
+    IEnumerator WaitForYesOrNoButtonClick(int item) //ë²„íŠ¼ì„ ëˆŒëŸ¬ê°’ì´ ì„¤ì • ë ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¬ëŠ” í•¨ìˆ˜
     {
-        // ¹öÆ°ÀÌ Å¬¸¯µÉ ¶§±îÁö ±â´Ù¸²
+        // ë²„íŠ¼ì´ í´ë¦­ë  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¼
         while (!gm.yesorno.HasValue)
         {
             yield return null;
@@ -147,12 +162,12 @@ public class PlayerScript : MonoBehaviour
 
         if (gm.yesorno.Value)
         {
-            gm.getitem(item); // ¾ÆÀÌÅÛ ÈÉÄ¡±â
+            gm.getitem(item); // ì•„ì´í…œ í›”ì¹˜ê¸°
             PeopleScript pS = whocoll.GetComponent<PeopleScript>();
-            pS.item = -1; // ºÎµúÈù »ç¶÷Àº ¾ÆÀÌÅÛ ¾øÀ½
+            pS.item = -1; // ë¶€ë”ªíŒ ì‚¬ëŒì€ ì•„ì´í…œ ì—†ìŒ
         }
-        gm.hiddeitem(item); //¼û±â±â
+        gm.hiddeitem(item); //ìˆ¨ê¸°ê¸°
         canMove = true;
-        gm.yesorno = null; //ÄÚ·çÆ¾ °ª ÃÊ±âÈ­
+        gm.yesorno = null; //ì½”ë£¨í‹´ ê°’ ì´ˆê¸°í™”
     }
 }

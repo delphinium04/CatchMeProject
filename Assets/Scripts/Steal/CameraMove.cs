@@ -5,18 +5,18 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     GameObject player;
-    public float smoothSpeed = 0.125f; // ºÎµå·¯¿î Ä«¸Ş¶ó ÀÌµ¿À» À§ÇØ
+    public float smoothSpeed = 0.125f; // ï¿½Îµå·¯ï¿½ï¿½ Ä«ï¿½Ş¶ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     float maxMapX = 26.6f;
     float minMapX = 0f;
 
     void Start()
     {
-        this.player = GameObject.Find("´ëÇĞ»ı µµµÏ");
+        this.player = GameObject.Find("ëŒ€í•™ìƒ ë„ë‘‘");
     }
 
-    void FixedUpdate() //Lerp ÇÔ¼ö ¶§¹®¿¡ 
+    void FixedUpdate() //Lerp ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
     {
-        //xÃàÀ¸·Î¸¸ Ä«¸Ş¶ó ¿òÁ÷ÀÓ
+        //xï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float playerPosX = Mathf.Clamp(player.transform.position.x, minMapX, maxMapX);
         
         Vector3 desiredPosition = new Vector3(playerPosX, transform.position.y, transform.position.z); 

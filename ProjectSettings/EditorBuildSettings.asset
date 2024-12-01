@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DijkstraGameOver.unity
     guid: 3c60798bf387dd04f9a52d912514a3b1
+  - enabled: 1
+    path: Assets/Scenes/StoreScene.unity
+    guid: 1947df7bac6294747bce0d55ed9a6481
+  - enabled: 1
+    path: Assets/Scenes/StealScene.unity
+    guid: a107fd0f230810c4f9eae93780c05c4a
   m_configObjects: {}
