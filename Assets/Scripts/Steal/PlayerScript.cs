@@ -6,7 +6,6 @@ public class PlayerScript : MonoBehaviour
 {
     public StealUiManager StealUiManager;
     public float speed = 5f; //플레이어의 이동 속도
-    private IStealManager gm;
     //플레이어가 갈 수 있는 맵 사이즈 크기
     public float maxX;
     public float maxY;

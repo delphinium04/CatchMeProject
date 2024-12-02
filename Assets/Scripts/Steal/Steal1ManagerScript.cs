@@ -5,19 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class Steal1ManagerScript : MonoBehaviour, IStealManager
+public class Steal1ManagerScript : MonoBehaviour
 {
 
-    public GameObject[] people; //�����
+    public GameObject[] people;
 
+    public List<int> heavy { get; set; }
+    public List<int> price;
 
-    //0: ����, 1: �ڵ��, 2: ��������, 3: ���, 4: ���޶���, 5: ���̾�
-    public List<int> heavy { get; set; } //���ǵ��� ���԰� ����ִ� ����Ʈ
-    public List<int> price; //���ǵ��� ������ ����ִ� ����Ʈ
-
-    public List<int> curritem; //�÷��̾ ���� ���� �ִ� ������ ����Ʈ
-    public int currheavy { get; set; } //���� �÷��̾ ������ �ִ� ������ �ѹ���
-    public int maxbagsize { get; set; } //������ �ִ� ũ��
+    public List<int> curritem;
+    public int currheavy { get; set; }
+    public int maxbagsize { get; set; }
 
     public Canvas itemCanvas;
     public Canvas UiCanvas;
@@ -33,15 +31,15 @@ public class Steal1ManagerScript : MonoBehaviour, IStealManager
     private int invokeCount = 0;
     private int maxInvokeCount = 5;
 
-    public bool? yesorno { get; set; } = null;  //bool? Ÿ���� true false NULL�� ���� ���� �� ����
+    public bool yesorno; 
 
     public bool bag_item = false;
 
     void Awake()
     {
-        send_item(); // ����鿡�� ������ ������
-        set_item_ph(); //�������� ���ݰ� ���� �����ؼ� ����Ʈ�� �ֱ�
-        HideCantSteal(); //��ġ�� ���Ҷ� ������ �ؽ�Ʈ �����
+        send_item();
+        set_item_ph();
+        HideCantSteal(); 
 
         curritem = new List<int>();
         maxbagsize = 10;
