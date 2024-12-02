@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class NpcBehaviour : MonoBehaviour
 {
+    public StealItem _item;
     GameObject _interactableSprite;
     ParticleSystem _particle;
-    public int _item;
 
     void Awake()
     {
@@ -23,17 +23,13 @@ public class NpcBehaviour : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-        {
             _interactableSprite.SetActive(true);
-        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-        {
             _interactableSprite.SetActive(false);
-        }
     }
 
 }

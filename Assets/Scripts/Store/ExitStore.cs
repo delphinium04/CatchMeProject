@@ -7,6 +7,10 @@ public class ExitStore : MonoBehaviour
 {
     public void OnExitButtonClick()
     {
-        SceneManager.LoadScene("StealScene");
+        if (GameDataManager.Instance._currentStage == 3) return;
+        // SceneManager.LoadScene("StealScene");
+
+        GameDataManager.Instance.SetCurrentStage(GameDataManager.Instance._currentStage + 1);
+        SceneManager.LoadScene($"{StaticText.DijkstraGameSceneName} {GameDataManager.Instance._currentStage}");
     }
 }

@@ -59,6 +59,9 @@ namespace Dijkstra
                 if (_disableInput) return;
                 OnConfirmButtonClicked();
             };
+
+            _dijkstraUIManager.OnNextButtonClicked += LoadStealScene;
+            
             GameStart();
         }
 
@@ -68,11 +71,6 @@ namespace Dijkstra
             InitializeGraph();
             InitializeRoads();
             RunDijkstraAlgorithm(_graph, _startNode, out var distance, out var tracedVertex);
-
-            foreach (var nodeEnumse in tracedVertex)
-            {
-                Debug.Log(string.Join(",", nodeEnumse.Select(e => ((int)e).ToString()).ToArray()));
-            }
 
             _userSelectedNodes = new List<NodeEnum>();
             _bestRoute = tracedVertex[(int)_endNode].ToArray();
@@ -322,6 +320,11 @@ namespace Dijkstra
             PlayerPrefs.SetInt(StaticText.PlayerPrefGameOverStage, _stageNumber);
             PlayerPrefs.SetInt(StaticText.PlayerPrefGameOverSign, (int)fail);
             SceneManager.LoadScene(StaticText.DijkstraGameOverSceneName);
+        }
+        
+        void LoadStealScene()
+        {
+            SceneManager.LoadScene($"{StaticText.StealGameSceneName} {_stageNumber}");
         }
 
         IEnumerator SetTimer(float time)

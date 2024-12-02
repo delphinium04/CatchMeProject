@@ -6,27 +6,8 @@ public class CameraMove : MonoBehaviour
 {
     public GameObject player;
     public float smoothSpeed = 0.125f; // 부드러운 카메라 이동을 위해
-    float maxMapX;
+    public float maxMapX;
     float minMapX = 0f;
-
-    public int stage;
-
-    void Start()
-    {
-        stage = 1;
-        if (stage == 1)
-        {
-            maxMapX = 24.6f;
-        }
-        else if (stage == 2)
-        {
-            maxMapX = 53f;
-        }
-        else if (stage == 3)
-        {
-            maxMapX = 60f;
-        }
-    }
 
     void Update() 
     {

@@ -1,6 +1,6 @@
 ﻿public static class StaticText
 {
-    public static string DijkstraGameOverSceneName => "DijkstraGameOver";
+    public static string DijkstraGameOverSceneName => "DijkstraFailed";
     public static string DijkstraGameSceneName => "Dijkstra"; //  Dijkstra 1
 
     public static string StealGameSceneName => "Steal"; // Steal 1
