@@ -4,17 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - man1
-  - man2
-  - woman2
-  - man3
-  - woman1
-  - woman3
-  - woman4
-  - man4
-  - man5
-  - man6
-  - rich
+  - NPC
   layers:
   - Default
   - TransparentFX

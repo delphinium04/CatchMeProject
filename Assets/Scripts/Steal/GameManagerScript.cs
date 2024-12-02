@@ -7,17 +7,17 @@ using TMPro;
 public class GameManagerScript : MonoBehaviour
 {
 
-    public GameObject[] people; //»ç¶÷µé
+    public GameObject[] people; //ï¿½ï¿½ï¿½ï¿½ï¿½
     //0: woman1, 1: woman2, 2: woman3, 3: man1, 4: man2, 5: man3 
-    private List<int> whoHave; //»ç¶÷ÀÇ ÀÎµ¦½º ¹øÈ£¿¡µû¶ó ¾î¶² ¾ÆÀÌÅÛ(¹øÈ£)°¡ ´ã°ÜÀÖ´Â ¸®½ºÆ® 
+    private List<int> whoHave; //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½È£)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® 
 
-    //0: Áö°©, 1: ÇÚµå¹é, 2: ¼­·ù°¡¹æ, 3: ·çºñ, 4: ¿¡¸Þ¶öµå, 5: ´ÙÀÌ¾Æ
-    public List<int> heavy; //¹°°ÇµéÀÇ ¹«°Ô°¡ ´ã°ÜÀÖ´Â ¸®½ºÆ®
-    public List<int> price; //¹°°ÇµéÀÇ °¡°ÝÀÌ ´ã°ÜÀÖ´Â ¸®½ºÆ®
+    //0: ï¿½ï¿½ï¿½ï¿½, 1: ï¿½Úµï¿½ï¿½, 2: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 3: ï¿½ï¿½ï¿½, 4: ï¿½ï¿½ï¿½Þ¶ï¿½ï¿½ï¿½, 5: ï¿½ï¿½ï¿½Ì¾ï¿½
+    public List<int> heavy; //ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô°ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    public List<int> price; //ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
-    public List<int> curritem; //ÇÃ·¹ÀÌ¾î°¡ ÇöÀç °®°í ÀÖ´Â ¾ÆÀÌÅÛ ¸®½ºÆ®
-    public int currheavy; //ÇöÀç ÇÃ·¹ÀÌ¾î°¡ °¡Áö°í ÀÖ´Â ¹°°ÇÀÇ ÃÑ¹«°Ô
-    public int maxbagsize; //°¡¹æÀÇ ÃÖ´ë Å©±â
+    public List<int> curritem; //ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    public int currheavy; //ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½
+    public int maxbagsize; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ Å©ï¿½ï¿½
 
     public Canvas itemCanvas;
     public Canvas UiCanvas;
@@ -29,12 +29,12 @@ public class GameManagerScript : MonoBehaviour
     public TextMeshProUGUI bagSizeText;
     private float time;
 
-    public bool? yesorno = null; //bool? Å¸ÀÔÀº true false NULLÀÇ °ªÀ» °¡Áú ¼ö ÀÖÀ½
+    public bool? yesorno = null; //bool? Å¸ï¿½ï¿½ï¿½ï¿½ true false NULLï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     void Awake()
     {
-        send_item(); // »ç¶÷µé¿¡°Ô ¾ÆÀÌÅÛ º¸³»±â
-        set_item_ph(); //¾ÆÀÌÅÛÀÇ °¡°Ý°ú ¹«°Ô ¼³Á¤ÇØ¼­ ¸®½ºÆ®¿¡ ³Ö±â
+        send_item(); // ï¿½ï¿½ï¿½ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        set_item_ph(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö±ï¿½
 
         curritem = new List<int>();
         maxbagsize = 10;
@@ -80,14 +80,14 @@ public class GameManagerScript : MonoBehaviour
             }
             if (index != -1)
             {
-                button.onClick.AddListener(() => OnButtonClick(index)); //ÀÎµ¦½º¿¡ ÇØ´çÇÏ´Â ¹öÆ° Å¬¸¯ ³Ö±â
+                button.onClick.AddListener(() => OnButtonClick(index)); //ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½Ö±ï¿½
                 Color color = image.color;
-                color.a = 0.5f; // Åõ¸íµµ¸¦ 50%·Î ¼³Á¤
+                color.a = 0.5f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 50%ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 image.color = color;
             }
         }
         Transform[] setUiTransform = new Transform[UiCanvas.transform.childCount];
-        for (int i = 0; i < UiTransform.Length; i++)//¿øÇÏ´Â ¼ø¼­´ë·Î ³Ö±â À§ÇØ
+        for (int i = 0; i < UiTransform.Length; i++)//ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             Transform ui = UiTransform[i];
             int index = -1;
@@ -135,37 +135,37 @@ public class GameManagerScript : MonoBehaviour
                     setUiTransform[index] = ui;
                     break;
             }
-            if(index >= 0 && index <= 6) //ÀÌ¹ÌÁö ¾ÆÀÌÅÛÀÏ °æ¿ì
+            if(index >= 0 && index <= 6) //ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             {
                 Image Uiitemimage = ui.GetComponent<Image>();
                 Uiitemimage.enabled = false;
             }
-            else if (index == 7) //ÅØ½ºÆ® ÀÏ¶§
+            else if (index == 7) //ï¿½Ø½ï¿½Æ® ï¿½Ï¶ï¿½
             {
                 TextMeshProUGUI stillornot = ui.GetComponent<TextMeshProUGUI>();
                 stillornot.enabled = false;
             }
-            else if (index == 8)//½ºÆ¿ ¹öÆ°
+            else if (index == 8)//ï¿½ï¿½Æ¿ ï¿½ï¿½Æ°
             {
                 TextMeshProUGUI yestext = ui.GetComponentInChildren<TextMeshProUGUI>();
                 yestext.enabled = false;
 
-                Image yesImage = ui.GetComponent<Image>(); // ¹öÆ° ÀÌ¹ÌÁö ¼û±â±â
+                Image yesImage = ui.GetComponent<Image>(); // ï¿½ï¿½Æ° ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 yesImage.enabled = false;
 
                 Button yesButton = ui.GetComponent<Button>();
                 yesButton.onClick.AddListener(() => OnButtonClickYesOrNo(true));
                 yesButton.interactable = false;
             }
-            else if (index == 9) //¾Æ´Ï¿À ¹öÆ°
+            else if (index == 9) //ï¿½Æ´Ï¿ï¿½ ï¿½ï¿½Æ°
             {
                 TextMeshProUGUI notext = ui.GetComponentInChildren<TextMeshProUGUI>();
                 notext.enabled = false;
 
-                Image noImage = ui.GetComponent<Image>(); // ¹öÆ° ÀÌ¹ÌÁö ¼û±â±â
+                Image noImage = ui.GetComponent<Image>(); // ï¿½ï¿½Æ° ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 noImage.enabled = false;
 
-                Button noButton = ui.GetComponent<Button>(); //¹öÆ° ¼û±â±â
+                Button noButton = ui.GetComponent<Button>(); //ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½
                 noButton.onClick.AddListener(() => OnButtonClickYesOrNo(false));
                 noButton.interactable = false;
             }  
@@ -174,20 +174,20 @@ public class GameManagerScript : MonoBehaviour
     }
 
 
-        //if (bag_item) { ¹è³¶ ¾ÆÀÌÅÛÀ» °®°í ÀÖ´Ù¸é (boolÇü)
-        //int num = bag_Algorithm(heavy, price, maxbagsize); ¹è³¶ ¾Ë°í¸®ÁòÀ¸·Î ÇÃ·¹ÀÌ¾î°¡ °¡Á®¾ß µÇ´Â ¾ÆÀÌÅÛ ¹øÈ£µéÀ» °¡Á®¿È
-        //if(num == whoHave[i]);¿¡ ÇØ´çÇÏ´Â »ç¶÷ ºû³ª±â
+        //if (bag_item) { ï¿½è³¶ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ (boolï¿½ï¿½)
+        //int num = bag_Algorithm(heavy, price, maxbagsize); ï¿½è³¶ ï¿½Ë°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //if(num == whoHave[i]);ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         //bag_item = false;
 
     void Update()
     {
         time -= Time.deltaTime;
         int seconds = Mathf.FloorToInt(time);
-        timerText.text = "³²Àº ½Ã°£ : " + seconds.ToString();
-        bagSizeText.text = "°¡¹æ : " + currheavy.ToString() + "/" + maxbagsize.ToString();
+        timerText.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ : " + seconds.ToString();
+        bagSizeText.text = "ï¿½ï¿½ï¿½ï¿½ : " + currheavy.ToString() + "/" + maxbagsize.ToString();
     }
 
-    void set_item_ph() { //¾ÆÀÌÅÛµéÀÇ °¡°Ý°ú ¹«°Ô¸¦ ¼¼ÆÃÇÏ´Â ÇÔ¼ö
+    void set_item_ph() { //ï¿½ï¿½ï¿½ï¿½ï¿½Ûµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý°ï¿½ ï¿½ï¿½ï¿½Ô¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
         heavy = new List<int>();
         price = new List<int>();
         heavy.Add(1);
@@ -203,7 +203,7 @@ public class GameManagerScript : MonoBehaviour
         price.Add(7);
         price.Add(10);
     }
-    void Shuffle(int[] array) //¹è¿­À» ·£´ýÀ¸·Î ¼¯´Â ÇÔ¼ö 
+    void Shuffle(int[] array) //ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ 
     {
         for (int i = 0; i < array.Length; i++)
         {
@@ -213,7 +213,7 @@ public class GameManagerScript : MonoBehaviour
             array[randomIndex] = temp;
         }
     }
-    void send_item() { //°ÔÀÓ ½ÃÀÛ½Ã ·£´ýÀ¸·Î »ç¶÷µé¿¡°Ô ¾ÆÀÌÅÛÀ» ÁÖ´Â º¯¼ö
+    void send_item() { //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
         int[] numbers = new int[people.Length];
         for (int i = 0; i < numbers.Length; i++)
         {
@@ -226,15 +226,15 @@ public class GameManagerScript : MonoBehaviour
 
         for (int i = 0; i < people.Length; i++)
         {
-            PeopleScript p = people[i].GetComponent<PeopleScript>();
+            NpcBehaviour p = people[i].GetComponent<NpcBehaviour>();
             if (p != null)
             {
                 whoHave.Add(numbers[i]);
-                p.item = numbers[i];
+                p._item = numbers[i];
             }
             else
             {
-                Debug.LogError("PeopleÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+                Debug.LogError("Peopleï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             }
         }
     }
@@ -261,7 +261,7 @@ public class GameManagerScript : MonoBehaviour
         noImage.enabled = true;
         notext.enabled = true;
         Uiitemimage.enabled = true;
-        //º¸¿©ÁÖ±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
     }
     public void hiddeitem(int item)
     {
@@ -287,28 +287,28 @@ public class GameManagerScript : MonoBehaviour
         noImage.enabled = false;
         notext.enabled = false;
         Uiitemimage.enabled = false;
-        //¼û±â±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½
     }
-    public void getitem(int item) //¾ÆÀÌÅÛ ¾ò±â
+    public void getitem(int item) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     {
-        curritem.Add(item); //ÇöÀç °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ ¸®½ºÆ®¿¡ Ãß°¡
-        currheavy += heavy[item]; //¹«°Ô Ãß°¡
-        itembuttons[item].interactable = true; //ÇØ´ç ¾ÆÀÌÅÛ ¹öÆ° È°¼ºÈ­
+        curritem.Add(item); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
+        currheavy += heavy[item]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+        itembuttons[item].interactable = true; //ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° È°ï¿½ï¿½È­
         Color color = itemimages[item].color;
-        color.a = 1f; // Åõ¸íµµ¸¦ 100%·Î ¼³Á¤
+        color.a = 1f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 100%ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         itemimages[item].color = color;
     }
-    void OnButtonClick(int item)  // ¾ÆÀÌÅÛ¿¡ ÇØ´çÇÏ´Â ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ¹ö¸®±â
+    void OnButtonClick(int item)  // ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         for (int i = 0; i < curritem.Count; i++) 
         {
-            if (curritem[i] == item) //ÇöÀç °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ Áß¿¡ Å¬¸¯ÇÑ ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é
+            if (curritem[i] == item) //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
             {
-                curritem.Remove(item); //ÇØ´ç ¾ÆÀÌÅÛ »èÁ¦
-                itembuttons[item].interactable = false; // ÇØ´ç ¾ÆÀÌÅÛ ¹öÆ° ºñÈ°¼ºÈ­
+                curritem.Remove(item); //ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                itembuttons[item].interactable = false; // ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
                 currheavy -= heavy[item];
                 Color color = itemimages[item].color;
-                color.a = 0.5f; // Åõ¸íµµ¸¦ 50%·Î ¼³Á¤
+                color.a = 0.5f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 50%ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 itemimages[item].color = color;
             }
         }
@@ -317,9 +317,9 @@ public class GameManagerScript : MonoBehaviour
         yesorno = result;
 
     }
-    IEnumerator WaitForYesOrNoButtonClick() //¹öÆ°À» ´­·¯°ªÀÌ ¼³Á¤ µÉ¶§±îÁö ±â´Ù¸®´Â ÇÔ¼ö
+    IEnumerator WaitForYesOrNoButtonClick() //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
      {
-        // ¹öÆ°ÀÌ Å¬¸¯µÉ ¶§±îÁö ±â´Ù¸²
+        // ï¿½ï¿½Æ°ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½
         while (yesorno == null)
         {
             yield return null;
