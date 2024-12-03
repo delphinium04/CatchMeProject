@@ -18,7 +18,47 @@ public class StoreDirector : MonoBehaviour
 
     List<StealItem> _loadedStealItems; // 불러온 Steal Item
     public int playerMoney; // 플레이어의 금액
+    List<StealItem> MergeSort(List<StealItem> list)
+    {
+        if (list.Count <= 1)
+            return list;
+        int middle = list.Count / 2;
+        List<StealItem> left = list.GetRange(0, middle);
+        List<StealItem> right = list.GetRange(middle, list.Count - middle);
+        return Merge(MergeSort(left), MergeSort(right));
+    }
 
+
+    // 병합 함수
+    List<StealItem> Merge(List<StealItem> left, List<StealItem> right)
+    {
+        List<StealItem> result = new List<StealItem>();
+        int i = 0, j = 0;
+        while (i < left.Count && j < right.Count)
+        {
+            if (left[i].ItemValue >= right[j].ItemValue) // 내림차순
+            {
+                result.Add(left[i]);
+                i++;
+            }
+            else
+            {
+                result.Add(right[j]);
+                j++;
+            }
+        }
+        while (i < left.Count)
+        {
+            result.Add(left[i]);
+            i++;
+        }
+        while (j < right.Count)
+        {
+            result.Add(right[j]);
+            j++;
+        }
+        return result;
+    }
     void Start()
     {
         // GameDataManager 초기화 및 아이템 데이터 가져오기
@@ -38,7 +78,7 @@ public class StoreDirector : MonoBehaviour
     // 저장된 아이템들을 스크롤뷰에 표시하는 함수
     void DisplaySavedItems()
     {
-        _loadedStealItems.Sort((a, b) => b.ItemValue.CompareTo(a.ItemValue)); // 가치 기준 내림차순
+        _loadedStealItems = MergeSort(_loadedStealItems); // 합병 정렬 호출
 
         // 저장된 아이템들을 하나씩 스크롤뷰에 추가
         foreach (var item in _loadedStealItems)
