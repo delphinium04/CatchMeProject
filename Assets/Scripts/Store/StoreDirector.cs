@@ -17,6 +17,7 @@ public class StoreDirector : MonoBehaviour
     public Transform scrollContentRoot; // Scroll View의 Content 오브젝트
 
     List<StealItem> _loadedStealItems; // 불러온 Steal Item
+
     // public int playerMoney; // 플레이어의 금액 < GameDataManger로 이전
     List<StealItem> MergeSort(List<StealItem> list)
     {
@@ -47,18 +48,22 @@ public class StoreDirector : MonoBehaviour
                 j++;
             }
         }
+
         while (i < left.Count)
         {
             result.Add(left[i]);
             i++;
         }
+
         while (j < right.Count)
         {
             result.Add(right[j]);
             j++;
         }
+
         return result;
     }
+
     void Start()
     {
         // GameDataManager 초기화 및 아이템 데이터 가져오기
