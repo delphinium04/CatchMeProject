@@ -17,7 +17,7 @@ public class StoreDirector : MonoBehaviour
     public Transform scrollContentRoot; // Scroll View의 Content 오브젝트
 
     List<StealItem> _loadedStealItems; // 불러온 Steal Item
-    public int playerMoney; // 플레이어의 금액
+    // public int playerMoney; // 플레이어의 금액 < GameDataManger로 이전
     List<StealItem> MergeSort(List<StealItem> list)
     {
         if (list.Count <= 1)
@@ -69,7 +69,7 @@ public class StoreDirector : MonoBehaviour
             return;
         }
 
-        _loadedStealItems.ForEach(item => playerMoney += item.ItemValue * 100);
+        _loadedStealItems.ForEach(item => GameDataManager.Instance._money += item.ItemValue * 100);
 
         DisplaySavedItems();
         UpdateMoneyUI();
@@ -110,7 +110,7 @@ public class StoreDirector : MonoBehaviour
     // 플레이어의 금액 UI를 업데이트하는 함수
     void UpdateMoneyUI()
     {
-        moneyText.text = $"{playerMoney:N0} 원";
+        moneyText.text = $"{GameDataManager.Instance._money:N0} 원";
     }
 
     // 아이템 구매 함수 (BuyButton onclick method)
@@ -119,15 +119,33 @@ public class StoreDirector : MonoBehaviour
         Debug.Log("BuyItem 함수 호출됨");
 
         // 구매 가능한지 체크
-        if (playerMoney < _prices[itemIndex])
+        if (GameDataManager.Instance._money < _prices[itemIndex])
         {
             Debug.Log("돈 부족");
             return;
         }
 
-        playerMoney -= _prices[itemIndex]; // 금액 차감
+        GameDataManager.Instance._money -= _prices[itemIndex]; // 금액 차감
         buyButtons[itemIndex].interactable = false;
         soldOutImages[itemIndex].SetActive(true);
+
+        switch (itemIndex)
+        {
+            case 0:
+                GameDataManager.Instance.HasBag = true;
+                break;
+            case 1:
+                GameDataManager.Instance.HasSpeed = true;
+                break;
+            case 2:
+                GameDataManager.Instance.HasValueSearch = true;
+                break;
+            case 3:
+                GameDataManager.Instance.HasNavigation = true;
+                break;
+            default:
+                break;
+        }
 
         UpdateMoneyUI(); // 금액 UI 업데이트
     }

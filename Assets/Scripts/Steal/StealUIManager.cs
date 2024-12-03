@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -10,18 +8,19 @@ using UnityEngine.SceneManagement;
 public class StealUIManager : MonoBehaviour
 {
     [Header("Root")] [SerializeField] Transform _itemListRoot;
-    
+
     [Header("Buttons")] [SerializeField] Button _nextRoundButton;
     [SerializeField] Button _acceptButton;
     [SerializeField] Button _denyButton;
     [SerializeField] Button _pickFailOkButton;
-    
-    [Header("Texts")]
-    [SerializeField] TMP_Text _timerText;
+
+    [Header("Texts")] [SerializeField] TMP_Text _timerText;
     [SerializeField] TMP_Text _bagText;
-    
+    [SerializeField] TMP_Text _itemStealText;
+    [SerializeField] TMP_Text _noticeText;
+
     [Header("Images")] [SerializeField] Image _promptItemImage;
-    
+
     [Header("Panels")] [SerializeField] GameObject _resultPanel;
     [SerializeField] GameObject _promptPanel;
     [SerializeField] GameObject _pickFailPanel;
@@ -49,12 +48,16 @@ public class StealUIManager : MonoBehaviour
             var image = go.AddComponent<Image>();
             image.sprite = item.ItemSprite;
             image.color = Color.white * 0.75f;
+
+            var handler = go.AddComponent<StealItemUIHandler>();
+            handler._item = item;
         }
     }
 
     public void UpdateItemList(StealItem item, bool isPicked)
     {
         Image image = _itemListRoot.Find(item.name).GetComponent<Image>();
+        image.GetComponent<StealItemUIHandler>()._isActivated = isPicked;
         if (isPicked) image.color = Color.white;
         else image.color = Color.white * 0.75f;
     }
@@ -63,7 +66,7 @@ public class StealUIManager : MonoBehaviour
     {
         _timerText.text = $"남은 시간: {time:D2}";
     }
-    
+
     public void UpdateWeight(int weight, int maxWeight)
     {
         _bagText.text = $"가방:\n{weight:D2}/{maxWeight}";
@@ -75,6 +78,13 @@ public class StealUIManager : MonoBehaviour
         _promptItemImage.sprite = item.ItemSprite;
         _isButtonClicked = false;
 
+        if (GameDataManager.Instance.HasValueSearch)
+        {
+            _itemStealText.gameObject.SetActive(true);
+            _itemStealText.text = $"무게:{item.ItemWeight}           가치:{item.ItemValue}";
+        }
+        else _itemStealText.gameObject.SetActive(false);
+
         while (!_isButtonClicked)
         {
             yield return null; // 사용자 클릭 대기
@@ -83,7 +93,7 @@ public class StealUIManager : MonoBehaviour
         _promptPanel.SetActive(false);
         onComplete(_promptResult);
     }
-    
+
     // prompt panel button onclick method
     void OnPickButtonClicked(bool value)
     {
@@ -91,9 +101,10 @@ public class StealUIManager : MonoBehaviour
         _isButtonClicked = true;
     }
 
-    public void EnablePickFailPanel()
+    public void EnablePickFailPanel(string message)
     {
         _pickFailPanel.SetActive(true);
+        _noticeText.text = message;
     }
 
     void OnPickFailOkButtonClicked()

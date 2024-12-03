@@ -33,6 +33,7 @@ public class StealManager : MonoBehaviour
 
     void GameSetting()
     {
+        // item
         if (GameDataManager.Instance.HasBag)
             _maxBagSize += 5;
         AssignItemToNpc();
@@ -68,15 +69,28 @@ public class StealManager : MonoBehaviour
 
         _uiManager.SetItemList(_itemExistInScene);
     }
+    
+    public void RemoveItem(StealItem item)
+    {
+        _bag.Remove(item);
+        _currentBagSize -= item.ItemWeight;
+        _uiManager.UpdateItemList(item, false);
+        _uiManager.UpdateWeight(_currentBagSize, _maxBagSize);
+    }
+
 
     // Called from PlayerBehaviour
     public void TryPickItem(NpcBehaviour npc)
     {
         var item = npc._item;
-        if (_bag.Contains(item) || _maxBagSize < _currentBagSize + item.ItemWeight)
+        if (_bag.Contains(item))
         {
-            // show can't pick panel
-            _uiManager.EnablePickFailPanel();
+            _uiManager.EnablePickFailPanel("이미 들고 있습니다!");
+            return;
+        }
+        if (_maxBagSize < _currentBagSize + item.ItemWeight)
+        {
+            _uiManager.EnablePickFailPanel("가방이 꽉 찼습니다!");
             return;
         }
 

@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
 {
-    public bool HasBag { get; private set; } = true;
-    public bool HasSpeed { get; private set; } = true;
-    public bool HasValueSearch { get; private set; } = true;
-    public bool HasNavigation { get; private set; } = true;
-    
+    public bool HasBag = false;
+    public bool HasSpeed = false;
+    public bool HasValueSearch = false;
+    public bool HasNavigation = false;
+
     public static GameDataManager Instance { get; private set; }
 
     // 아이템과 가격을 저장하는 2차원 배열 리스트
     List<StealItem> _itemList = new(); // [아이템, 가격] 형태로 저장
 
     public int _currentStage { get; private set; } = 1;
+
+    public int _money = 0;
 
     private void Awake()
     {
@@ -37,6 +39,7 @@ public class GameDataManager : MonoBehaviour
         _itemList = new List<StealItem>(items);
     }
 
+    // Store 씬 시작 시 초기호
     public List<StealItem> LoadStealItems()
     {
         HasBag = false;
