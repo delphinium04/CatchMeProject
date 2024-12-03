@@ -34,8 +34,9 @@ public class StealManager : MonoBehaviour
     void GameSetting()
     {
         // item
-        if (GameDataManager.Instance.HasBag)
+        if (GameDataManager.Instance._hasBag)
             _maxBagSize += 5;
+        _uiManager.UpdateWeight(_currentBagSize, _maxBagSize);
         AssignItemToNpc();
         StartCoroutine("SetTimer", 30);
     }
@@ -123,29 +124,30 @@ public class StealManager : MonoBehaviour
     public void StageEnd()
     {
         GameDataManager.Instance.SaveStealItems(_bag);
-        _uiManager.StageWin();
+
+        int currentValue = 0, maxValue = 0;
+        _bag.ForEach(item => currentValue += item.ItemValue * 100);
+        BagAlgorithm(_itemExistInScene, _maxBagSize).ForEach(item => maxValue += item.ItemValue * 100);
+        _uiManager.StageWin(currentValue, maxValue);
     }
 
-    List<StealItem> BagAlgorithm(List<StealItem> items, int maxBagSize)
+    List<StealItem> BagAlgorithm(StealItem[] items, int maxBagSize)
     {
-        List<int> weight = new List<int>();
-        List<int> price = new List<int>();
+        List<Tuple<int, int>> products = new List<Tuple<int, int>>(); // weight, price
         List<StealItem> bestBag = new List<StealItem>();
-
-        weight.AddRange(_itemExistInScene.Select(item => item.ItemWeight));
-        price.AddRange(_itemExistInScene.Select(item => item.ItemWeight));
-
-        int n = weight.Count;
+        
+        items.ToList().ForEach(item => products.Add(new Tuple<int, int>(item.ItemWeight, item.ItemValue)));
+        int n = products.Count;
         int[,] calculatedHistory = new int[n + 1, maxBagSize + 1];
 
         for (int i = 1; i <= n; i++)
         {
             for (int w = 1; w <= maxBagSize; w++)
             {
-                if (weight[i - 1] <= w)
+                if (products[i - 1].Item1 <= w)
                 {
                     calculatedHistory[i, w] = Mathf.Max(calculatedHistory[i - 1, w],
-                        calculatedHistory[i - 1, w - weight[i - 1]] + price[i - 1]);
+                        calculatedHistory[i - 1, w - products[i - 1].Item1] + products[i - 1].Item2);
                 }
                 else
                 {
@@ -160,7 +162,7 @@ public class StealManager : MonoBehaviour
             if (calculatedHistory[i, currentWeight] != calculatedHistory[i - 1, currentWeight])
             {
                 bestBag.Add(items[i - 1]);
-                currentWeight -= weight[i - 1];
+                currentWeight -= products[i - 1].Item1;
             }
         }
 

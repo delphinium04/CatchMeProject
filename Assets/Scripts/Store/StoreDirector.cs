@@ -73,6 +73,9 @@ public class StoreDirector : MonoBehaviour
 
         DisplaySavedItems();
         UpdateMoneyUI();
+
+        if (GameDataManager.Instance._currentStage == 3)
+            SceneManager.LoadScene("End");
     }
 
     // 저장된 아이템들을 스크롤뷰에 표시하는 함수
@@ -132,16 +135,16 @@ public class StoreDirector : MonoBehaviour
         switch (itemIndex)
         {
             case 0:
-                GameDataManager.Instance.HasBag = true;
+                GameDataManager.Instance._hasBag = true;
                 break;
             case 1:
-                GameDataManager.Instance.HasSpeed = true;
+                GameDataManager.Instance._hasSpeed = true;
                 break;
             case 2:
-                GameDataManager.Instance.HasValueSearch = true;
+                GameDataManager.Instance._hasValueSearch = true;
                 break;
             case 3:
-                GameDataManager.Instance.HasNavigation = true;
+                GameDataManager.Instance._hasNavigation = true;
                 break;
             default:
                 break;

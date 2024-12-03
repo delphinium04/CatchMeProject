@@ -79,9 +79,9 @@ namespace Dijkstra
             Debug.Log($"Best Path: {result}");
 
             // Set Item Effect
-            if (GameDataManager.Instance.HasSpeed)
+            if (GameDataManager.Instance._hasSpeed)
                 _thiefSpeed *= 1.5f;
-            if(GameDataManager.Instance.HasNavigation)
+            if(GameDataManager.Instance._hasNavigation)
                 _dijkstraUIManager.OpenItemAlert(_bestRoute);
             
             _dijkstraUIManager.SetStage(_stageNumber, (int)_endNode);

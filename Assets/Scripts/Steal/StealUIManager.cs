@@ -18,7 +18,8 @@ public class StealUIManager : MonoBehaviour
     [SerializeField] TMP_Text _bagText;
     [SerializeField] TMP_Text _itemStealText;
     [SerializeField] TMP_Text _noticeText;
-
+    [SerializeField] TMP_Text _valueText;
+    
     [Header("Images")] [SerializeField] Image _promptItemImage;
 
     [Header("Panels")] [SerializeField] GameObject _resultPanel;
@@ -78,7 +79,7 @@ public class StealUIManager : MonoBehaviour
         _promptItemImage.sprite = item.ItemSprite;
         _isButtonClicked = false;
 
-        if (GameDataManager.Instance.HasValueSearch)
+        if (GameDataManager.Instance._hasValueSearch)
         {
             _itemStealText.gameObject.SetActive(true);
             _itemStealText.text = $"무게:{item.ItemWeight}           가치:{item.ItemValue}";
@@ -113,8 +114,9 @@ public class StealUIManager : MonoBehaviour
     }
 
 
-    public void StageWin()
+    public void StageWin(int currentValue, int maxValue)
     {
         _resultPanel.SetActive(true);
+        _valueText.text = $"이번 라운드 최대 가치: {maxValue}원\n현재 물건 가치: {currentValue}원";
     }
 }
