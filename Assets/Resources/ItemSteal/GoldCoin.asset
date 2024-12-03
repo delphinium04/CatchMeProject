@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e56869ac79146c79414afb53981c9f5, type: 3}
   m_Name: GoldCoin
   m_EditorClassIdentifier: 
-  ItemType: 8
+  ItemType: 10
   ItemSprite: {fileID: 21300000, guid: eee1017388f84904eb249a67249c2924, type: 3}
-  ItemValue: 3
+  _itemValue: 3
   ItemWeight: 3
+  IsRandomValue: 0
+  RandomMin: 0
+  RandomMax: 0

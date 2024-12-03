@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e56869ac79146c79414afb53981c9f5, type: 3}
-  m_Name: Bag
+  m_Name: HandBag
   m_EditorClassIdentifier: 
   ItemType: 1
   ItemSprite: {fileID: 21300000, guid: c77a519bd00e65d4fb9c85c4c3775a93, type: 3}
-  ItemValue: 1
-  ItemWeight: 1
+  _itemValue: 0
+  ItemWeight: 3
+  IsRandomValue: 1
+  RandomMin: 2
+  RandomMax: 6

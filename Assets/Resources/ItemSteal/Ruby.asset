@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 3
   ItemSprite: {fileID: 21300000, guid: e9b9d98b9c0e3e84d9e7de2bccf1e1ed, type: 3}
-  ItemValue: 4
-  ItemWeight: 2
+  _itemValue: 5
+  ItemWeight: 5
+  IsRandomValue: 0
+  RandomMin: 0
+  RandomMax: 0

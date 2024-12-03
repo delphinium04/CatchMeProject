@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e56869ac79146c79414afb53981c9f5, type: 3}
   m_Name: Carkey
   m_EditorClassIdentifier: 
-  ItemType: 6
+  ItemType: 8
   ItemSprite: {fileID: 21300000, guid: 876d1a65ce439674bb2149544c0a951a, type: 3}
-  ItemValue: 3
-  ItemWeight: 3
+  _itemValue: 0
+  ItemWeight: 2
+  IsRandomValue: 1
+  RandomMin: 3
+  RandomMax: 7

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e56869ac79146c79414afb53981c9f5, type: 3}
   m_Name: Cellphone
   m_EditorClassIdentifier: 
-  ItemType: 7
+  ItemType: 6
   ItemSprite: {fileID: 21300000, guid: 16f3f07af066d674f93104d3d59b05b8, type: 3}
-  ItemValue: 3
-  ItemWeight: 3
+  _itemValue: 1
+  ItemWeight: 1
+  IsRandomValue: 0
+  RandomMin: 0
+  RandomMax: 0
