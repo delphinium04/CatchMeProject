@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
+using Dijkstra.Data;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Dijkstra
@@ -19,7 +20,8 @@ namespace Dijkstra
             StageText,
             GoalNodeText,
             PlayerText,
-            PoliceText
+            PoliceText,
+            ItemText
         }
 
         enum Buttons
@@ -27,11 +29,13 @@ namespace Dijkstra
             ResetButton,
             ConfirmButton,
             NextRoundButton,
+            ItemCloseButton
         }
 
         enum GameObjects
         {
             ResultPanel,
+            ItemEffectPanel
         }
 
         void Awake()
@@ -57,6 +61,8 @@ namespace Dijkstra
                 button.onClick.AddListener(() => OnConfirmButtonClicked?.Invoke());
             if ((button = GetButton(Buttons.NextRoundButton)) != null)
                 button.onClick.AddListener(() => OnNextButtonClicked?.Invoke());
+            if ((button = GetButton(Buttons.ItemCloseButton)) != null)
+                button.onClick.AddListener(CloseItemAlert);
         }
 
         TMP_Text GetText(Texts texts) => Get<TMP_Text>((int)texts);
@@ -76,7 +82,7 @@ namespace Dijkstra
 
         public void SetUserPath(params int[] path)
         {
-            string text = String.Join(" > ", path);
+            string text = string.Join(" > ", path);
             GetText(Texts.UserPathText).text = text;
         }
 
@@ -84,6 +90,18 @@ namespace Dijkstra
         {
             string text = $"Timer: {t:F2}";
             GetText(Texts.TimerText).text = text;
+        }
+
+        public void OpenItemAlert(NodeEnum[] nodes)
+        {
+            Get<GameObject>((int)GameObjects.ItemEffectPanel).SetActive(true);
+            GetText(Texts.ItemText).text = "아이템 효과 발동!\n최적 길: ";
+            GetText(Texts.ItemText).text += string.Join(" > ", nodes.Select(e => (int)e));
+        }
+
+        void CloseItemAlert()
+        {
+            Get<GameObject>((int)GameObjects.ItemEffectPanel).SetActive(false);
         }
 
         public void StageClear()

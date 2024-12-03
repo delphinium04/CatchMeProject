@@ -2,13 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class StealManager : MonoBehaviour
 {
+    const int STAGE1_ITEM_TYPE_MAX = (int)ItemType.Diamond;
+    const int STAGE2_ITEM_TYPE_MAX = (int)ItemType.Carkey;
+    const int STAGE3_ITEM_TYPE_MAX = (int)ItemType.Gold;
+
     StealUIManager _uiManager;
 
     public NpcBehaviour[] _people;
@@ -30,22 +33,40 @@ public class StealManager : MonoBehaviour
 
     void GameSetting()
     {
-        // NPC에 아이템 대입
+        if (GameDataManager.Instance.HasBag)
+            _maxBagSize += 5;
+        AssignItemToNpc();
+        StartCoroutine("SetTimer", 30);
+    }
+    
+    
+    void AssignItemToNpc()
+    {
         _people = GameObject.FindGameObjectsWithTag("NPC").Select(npc => npc.GetComponent<NpcBehaviour>()).ToArray();
-        var resources = Resources.LoadAll<StealItem>("ItemSteal").ToList();
-       _itemExistInScene = new StealItem[_people.Length];
+        var allResources = Resources.LoadAll<StealItem>("ItemSteal").ToList();
+
+        int maxItemEnum = GameDataManager.Instance._currentStage switch
+        {
+            1 => STAGE1_ITEM_TYPE_MAX,
+            2 => STAGE2_ITEM_TYPE_MAX,
+            3 => STAGE3_ITEM_TYPE_MAX,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        List<StealItem> list = allResources.Where(e =>
+            (int)e.ItemType <= maxItemEnum).ToList();
+
+        _itemExistInScene = new StealItem[_people.Length];
 
         for (var index = 0; index < _people.Length; index++)
         {
-            StealItem currentItem = resources[Random.Range(0, resources.Count)];
-            resources.Remove(currentItem);
+            StealItem currentItem = list[Random.Range(0, list.Count)];
+            list.Remove(currentItem);
             _people[index]._item = currentItem;
             _itemExistInScene[index] = currentItem;
         }
 
         _uiManager.SetItemList(_itemExistInScene);
-
-        StartCoroutine("SetTimer", 30);
     }
 
     // Called from PlayerBehaviour
@@ -77,7 +98,12 @@ public class StealManager : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-        StageEnd();
+        GameOver();
+    }
+
+    void GameOver()
+    {
+        SceneManager.LoadScene(StaticText.StealGameOverSceneName);
     }
 
     public void StageEnd()
@@ -91,10 +117,10 @@ public class StealManager : MonoBehaviour
         List<int> weight = new List<int>();
         List<int> price = new List<int>();
         List<StealItem> bestBag = new List<StealItem>();
-        
+
         weight.AddRange(_itemExistInScene.Select(item => item.ItemWeight));
         price.AddRange(_itemExistInScene.Select(item => item.ItemWeight));
-        
+
         int n = weight.Count;
         int[,] calculatedHistory = new int[n + 1, maxBagSize + 1];
 
@@ -119,7 +145,7 @@ public class StealManager : MonoBehaviour
         {
             if (calculatedHistory[i, currentWeight] != calculatedHistory[i - 1, currentWeight])
             {
-                bestBag.Add(items[i-1]);
+                bestBag.Add(items[i - 1]);
                 currentWeight -= weight[i - 1];
             }
         }

@@ -12,7 +12,22 @@ public class StealItem: ScriptableObject
 {
     public ItemType ItemType;
     public Sprite ItemSprite;
-    public int ItemValue => IsRandomValue ? Random.Range(RandomMin, RandomMax+1) : _itemValue;
+
+    public int ItemValue
+    {
+        get
+        {
+            if (IsRandomValue)
+            {
+                if (_randomValue == -1)
+                    _randomValue = Random.Range(RandomMin, RandomMax + 1);
+                return _randomValue;
+            }
+
+            return _itemValue;
+        }
+    }
+
     [SerializeField] private int _itemValue;
     public int ItemWeight;
 
@@ -20,4 +35,5 @@ public class StealItem: ScriptableObject
     public bool IsRandomValue;
     public int RandomMin;
     public int RandomMax;
+    private int _randomValue = -1;
 }

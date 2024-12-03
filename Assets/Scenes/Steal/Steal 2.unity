@@ -351,7 +351,7 @@ Transform:
   m_GameObject: {fileID: 99758234}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.445488, y: -0.0628826, z: -0.07640456}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -393,7 +393,7 @@ MonoBehaviour:
   _pickFailOkButton: {fileID: 1161779160}
   _timerText: {fileID: 1864634330}
   _bagText: {fileID: 1832904664}
-  _promptItemImage: {fileID: 1942854192}
+  _promptItemImage: {fileID: 0}
   _resultPanel: {fileID: 439339198}
   _promptPanel: {fileID: 300603758}
   _pickFailPanel: {fileID: 751520407}
@@ -22214,7 +22214,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _isEnd: 0
   _minPos: {x: -9, y: -4}
-  _maxPos: {x: 60, y: -2}
+  _maxPos: {x: 68, y: -2}
 --- !u!114 &1013926988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48772,7 +48772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC00\uBC29 : 0/10"
+  m_text: "\uAC00\uBC29 :\n00/10"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c61022c3f33f63c4298b2b71c59c3c1c, type: 2}
   m_sharedMaterial: {fileID: 3966026348823706769, guid: c61022c3f33f63c4298b2b71c59c3c1c, type: 2}
@@ -48799,14 +48799,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 5
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

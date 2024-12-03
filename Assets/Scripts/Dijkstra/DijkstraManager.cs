@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dijkstra.Data;
 using TMPro;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -77,6 +78,12 @@ namespace Dijkstra
             string result = string.Join(" > ", tracedVertex[(int)_endNode].Select(e => ((int)e).ToString()).ToArray());
             Debug.Log($"Best Path: {result}");
 
+            // Set Item Effect
+            if (GameDataManager.Instance.HasSpeed)
+                _thiefSpeed *= 1.5f;
+            if(GameDataManager.Instance.HasNavigation)
+                _dijkstraUIManager.OpenItemAlert(_bestRoute);
+            
             _dijkstraUIManager.SetStage(_stageNumber, (int)_endNode);
             _dijkstraUIManager.SetSpeedText(_thiefSpeed, _policeSpeed);
             OnNodeClicked(_startNode);
