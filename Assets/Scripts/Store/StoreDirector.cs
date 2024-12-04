@@ -71,7 +71,7 @@ public class StoreDirector : MonoBehaviour
     // 저장된 아이템들을 스크롤뷰에 표시하는 함수
     void DisplaySavedItems()
     {
-        _loadedStealItems = QuickSort(_loadedStealItems); // 합병 정렬 호출
+        _loadedStealItems = QuickSort(_loadedStealItems); // 퀵 정렬 호출
 
         // 저장된 아이템들을 하나씩 스크롤뷰에 추가
         foreach (var item in _loadedStealItems)
