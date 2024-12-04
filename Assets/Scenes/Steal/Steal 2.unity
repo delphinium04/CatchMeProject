@@ -263,6 +263,7 @@ MonoBehaviour:
   _noticeText: {fileID: 1302236886}
   _valueText: {fileID: 2025380289}
   _promptItemImage: {fileID: 1942854192}
+  _gridLayout: {fileID: 685621342}
   _resultPanel: {fileID: 1854043276}
   _promptPanel: {fileID: 300603758}
   _pickFailPanel: {fileID: 751520407}

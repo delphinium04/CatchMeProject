@@ -36,8 +36,10 @@ public class StealManager : MonoBehaviour
         // item
         if (GameDataManager.Instance._hasBag)
             _maxBagSize += 5;
-        _uiManager.UpdateWeight(_currentBagSize, _maxBagSize);
         AssignItemToNpc();
+        _uiManager.UpdateWeight(_currentBagSize, _maxBagSize);
+        _uiManager.SetItemSize(_itemExistInScene.Length);
+        
         StartCoroutine("SetTimer", 30);
     }
     

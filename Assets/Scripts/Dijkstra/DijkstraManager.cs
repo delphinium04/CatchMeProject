@@ -19,11 +19,12 @@ namespace Dijkstra
         WeightedGraph _graph = null;
 
         float _timer = 0;
+        int _time = 20;
         bool _disableInput = false;
 
         #region OUT_VARIABLES
 
-        [Header("Data")] public int _time;
+        [Header("Data")] 
         public int _stageNumber = 1;
         public List<Edge> _edges = new();
         public Transform _nodeParent;

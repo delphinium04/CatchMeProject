@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class StealUIManager : MonoBehaviour
 {
@@ -19,8 +22,9 @@ public class StealUIManager : MonoBehaviour
     [SerializeField] TMP_Text _itemStealText;
     [SerializeField] TMP_Text _noticeText;
     [SerializeField] TMP_Text _valueText;
-    
+
     [Header("Images")] [SerializeField] Image _promptItemImage;
+    [SerializeField] GridLayoutGroup _gridLayout;
 
     [Header("Panels")] [SerializeField] GameObject _resultPanel;
     [SerializeField] GameObject _promptPanel;
@@ -34,7 +38,16 @@ public class StealUIManager : MonoBehaviour
         _acceptButton.onClick.AddListener(() => OnPickButtonClicked(true));
         _denyButton.onClick.AddListener(() => OnPickButtonClicked(false));
         _pickFailOkButton.onClick.AddListener(OnPickFailOkButtonClicked);
-        _nextRoundButton.onClick.AddListener(() => { SceneManager.LoadScene($"{StaticText.DijkstraGameSceneName} {GameDataManager.Instance._currentStage}"); });
+        _nextRoundButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene($"{StaticText.DijkstraGameSceneName} {GameDataManager.Instance._currentStage}");
+        });
+    }
+
+    public void SetItemSize(int itemCount)
+    {
+        if (itemCount <= 6) return;
+        _gridLayout.cellSize = Vector2.one * 60;
     }
 
     public void SetItemList(StealItem[] items)

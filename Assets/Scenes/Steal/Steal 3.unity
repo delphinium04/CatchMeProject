@@ -475,6 +475,7 @@ MonoBehaviour:
   _noticeText: {fileID: 1302236886}
   _valueText: {fileID: 977610528}
   _promptItemImage: {fileID: 1942854192}
+  _gridLayout: {fileID: 685621342}
   _resultPanel: {fileID: 1910142902}
   _promptPanel: {fileID: 300603758}
   _pickFailPanel: {fileID: 751520407}
@@ -13268,8 +13269,6 @@ MonoBehaviour:
   _hasValueSearch: 0
   _hasNavigation: 0
   _houseType: 0
-  _currentStage: 3
-  _money: 0
 --- !u!4 &1016364055
 Transform:
   m_ObjectHideFlags: 0
