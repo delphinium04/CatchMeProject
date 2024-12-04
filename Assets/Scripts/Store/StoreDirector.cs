@@ -16,50 +16,35 @@ public class StoreDirector : MonoBehaviour
     List<StealItem> _loadedStealItems; // 불러온 Steal Item
 
     // public int playerMoney; // 플레이어의 금액 < GameDataManger로 이전
-    List<StealItem> MergeSort(List<StealItem> list)
+    List<StealItem> QuickSort(List<StealItem> list)
     {
         if (list.Count <= 1)
-            return list;
-        int middle = list.Count / 2;
-        List<StealItem> left = list.GetRange(0, middle);
-        List<StealItem> right = list.GetRange(middle, list.Count - middle);
-        return Merge(MergeSort(left), MergeSort(right));
-    }
+            return list; // 리스트가 1개 이하일 경우 정렬 필요 없음
 
+        // 피벗 선택 (중간값 사용)
+        StealItem pivot = list[list.Count / 2];
+        list.Remove(pivot);
 
-    // 병합 함수
-    List<StealItem> Merge(List<StealItem> left, List<StealItem> right)
-    {
-        List<StealItem> result = new List<StealItem>();
-        int i = 0, j = 0;
-        while (i < left.Count && j < right.Count)
+        List<StealItem> left = new List<StealItem>();
+        List<StealItem> right = new List<StealItem>();
+
+        // 피벗을 기준으로 리스트 분할
+        foreach (var item in list)
         {
-            if (left[i].ItemValue >= right[j].ItemValue) // 내림차순
-            {
-                result.Add(left[i]);
-                i++;
-            }
+            if (item.ItemValue >= pivot.ItemValue) // 내림차순
+                left.Add(item);
             else
-            {
-                result.Add(right[j]);
-                j++;
-            }
+                right.Add(item);
         }
 
-        while (i < left.Count)
-        {
-            result.Add(left[i]);
-            i++;
-        }
+        // 분할된 리스트를 재귀적으로 정렬
+        List<StealItem> sorted = QuickSort(left);
+        sorted.Add(pivot); // 피벗 추가
+        sorted.AddRange(QuickSort(right));
 
-        while (j < right.Count)
-        {
-            result.Add(right[j]);
-            j++;
-        }
-
-        return result;
+        return sorted;
     }
+
 
     void Start()
     {
@@ -86,7 +71,7 @@ public class StoreDirector : MonoBehaviour
     // 저장된 아이템들을 스크롤뷰에 표시하는 함수
     void DisplaySavedItems()
     {
-        _loadedStealItems = MergeSort(_loadedStealItems); // 합병 정렬 호출
+        _loadedStealItems = QuickSort(_loadedStealItems); // 합병 정렬 호출
 
         // 저장된 아이템들을 하나씩 스크롤뷰에 추가
         foreach (var item in _loadedStealItems)
