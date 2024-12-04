@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Dijkstra;
 
 public class StoreDirector : MonoBehaviour
 {
-    readonly int[] _prices = { 500, 500, 5000, 5000 }; // 아이템 가격 배열
+    readonly int[] _prices = { 500, 500, 1000, 1000 }; // 아이템 가격 배열
     public Button[] buyButtons; // 아이템을 구매할 버튼들
     public TMP_Text moneyText; // 플레이어의 금액을 표시할 텍스트
     public GameObject[] soldOutImages; // 판매 완료 이미지
@@ -66,6 +63,12 @@ public class StoreDirector : MonoBehaviour
 
     void Start()
     {
+        if (GameDataManager.Instance._currentStage == 3 && SceneManager.GetActiveScene().name == "Store")
+        {
+            SceneManager.LoadScene("StoreSpecial");
+            return;
+        }
+        
         // GameDataManager 초기화 및 아이템 데이터 가져오기
         _loadedStealItems = GameDataManager.Instance.LoadStealItems();
         if (_loadedStealItems.Count == 0)
@@ -78,9 +81,6 @@ public class StoreDirector : MonoBehaviour
 
         DisplaySavedItems();
         UpdateMoneyUI();
-
-        if (GameDataManager.Instance._currentStage == 3)
-            SceneManager.LoadScene("End");
     }
 
     // 저장된 아이템들을 스크롤뷰에 표시하는 함수
@@ -125,6 +125,27 @@ public class StoreDirector : MonoBehaviour
     public void BuyItem(int itemIndex)
     {
         Debug.Log("BuyItem 함수 호출됨");
+        
+        // 마지막 한정
+        if (GameDataManager.Instance._currentStage == 3)
+        {
+            var housePrices = new int[] { 3000,3500,4200,50000 };
+            
+            if (GameDataManager.Instance._money < housePrices[itemIndex])
+            {
+                Debug.Log("돈 부족");
+                return;
+            }
+
+            GameDataManager.Instance._houseType = itemIndex switch
+            {
+                0 => GameDataManager.HouseType.SmallRoom,
+                1 => GameDataManager.HouseType.GoodRoom,
+                2 => GameDataManager.HouseType.Building,
+                _ => GameDataManager.HouseType.SeoulStation
+            };
+            SceneManager.LoadScene("End");
+        }
 
         // 구매 가능한지 체크
         if (GameDataManager.Instance._money < _prices[itemIndex])

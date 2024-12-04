@@ -521,7 +521,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 128946311}
   m_HandleRect: {fileID: 128946310}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -911,7 +911,7 @@ Transform:
   m_GameObject: {fileID: 790606404}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.4840083, y: -1.3391691, z: 1419.1627}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -934,13 +934,12 @@ MonoBehaviour:
   - {fileID: 587319260}
   - {fileID: 2120398268}
   - {fileID: 816251496}
+  moneyText: {fileID: 1274965489}
   soldOutImages:
   - {fileID: 850815097}
   - {fileID: 89912983}
   - {fileID: 772326455}
   - {fileID: 2063773021}
-  moneyText: {fileID: 1274965489}
-  playerMoney: 0
   itemPrefab: {fileID: 8791336418907175607, guid: c8fd45194562b4b439bc3c96b5d8e5b7, type: 3}
   scrollContentRoot: {fileID: 274944860}
 --- !u!114 &790606408
@@ -1493,9 +1492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '5000
-
-'
+  m_text: 1000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df74d83293808564d857505ba6b9c5ea, type: 2}
   m_sharedMaterial: {fileID: 2863153289651159681, guid: df74d83293808564d857505ba6b9c5ea, type: 2}
@@ -1522,7 +1519,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.7
+  m_fontSize: 49.65
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1906,6 +1903,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d21aed2349fca458f135b7c0c2633b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hasBag: 0
+  _hasSpeed: 0
+  _hasValueSearch: 0
+  _hasNavigation: 0
+  _houseType: 0
+  _currentStage: 3
+  _money: 13333
 --- !u!4 &1310317981
 Transform:
   m_ObjectHideFlags: 0
@@ -2284,7 +2288,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 564552230}
   m_HandleRect: {fileID: 564552229}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2637,7 +2641,7 @@ Canvas:
   m_GameObject: {fileID: 1814567907}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1671723898}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -3011,9 +3015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '5000
-
-'
+  m_text: 1000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df74d83293808564d857505ba6b9c5ea, type: 2}
   m_sharedMaterial: {fileID: 2863153289651159681, guid: df74d83293808564d857505ba6b9c5ea, type: 2}
@@ -3040,7 +3042,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.7
+  m_fontSize: 49.65
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1

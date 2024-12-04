@@ -34,12 +34,12 @@ namespace Dijkstra
 
         [Header("Entity")] public PathFollower _thief;
         public PathFollower _police;
-        public float _policeDelay = 0.5f;
-        public float _policeSpeed = 2f;
-        public float _thiefSpeed = 2.5f;
 
         #endregion OUT_VARIABLES
 
+        float _policeDelay { get; set; } = 0.25f;
+        float _policeSpeed { get; set; }= 2f;
+        float _thiefSpeed { get; set; }= 2.2f;
 
         void Awake()
         {
@@ -60,7 +60,7 @@ namespace Dijkstra
                 OnConfirmButtonClicked();
             };
 
-            _dijkstraUIManager.OnNextButtonClicked += LoadStealScene;
+            _dijkstraUIManager.OnNextButtonClicked += LoadStoreScene;
             
             GameStart();
         }
@@ -328,9 +328,9 @@ namespace Dijkstra
             SceneManager.LoadScene(StaticText.DijkstraGameOverSceneName);
         }
         
-        void LoadStealScene()
+        void LoadStoreScene()
         {
-            SceneManager.LoadScene($"{StaticText.StealGameSceneName} {_stageNumber}");
+            SceneManager.LoadScene(StaticText.StoreSceneName);
         }
 
         IEnumerator SetTimer(float time)

@@ -34,7 +34,7 @@ public class StealUIManager : MonoBehaviour
         _acceptButton.onClick.AddListener(() => OnPickButtonClicked(true));
         _denyButton.onClick.AddListener(() => OnPickButtonClicked(false));
         _pickFailOkButton.onClick.AddListener(OnPickFailOkButtonClicked);
-        _nextRoundButton.onClick.AddListener(() => { SceneManager.LoadScene(StaticText.StoreSceneName); });
+        _nextRoundButton.onClick.AddListener(() => { SceneManager.LoadScene($"{StaticText.DijkstraGameSceneName} {GameDataManager.Instance._currentStage}"); });
     }
 
     public void SetItemList(StealItem[] items)
@@ -117,6 +117,6 @@ public class StealUIManager : MonoBehaviour
     public void StageWin(int currentValue, int maxValue)
     {
         _resultPanel.SetActive(true);
-        _valueText.text = $"이번 라운드 최대 가치: {maxValue}원\n현재 물건 가치: {currentValue}원";
+        _valueText.text = $"이번 라운드 최대 가치: ${maxValue}\n챙긴 물건 가치: ${currentValue}";
     }
 }
