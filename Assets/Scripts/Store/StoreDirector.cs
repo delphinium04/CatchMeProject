@@ -88,7 +88,7 @@ public class StoreDirector : MonoBehaviour
             if (priceText != null)
             {
                 priceText.fontSize = 24;
-                priceText.text = $"{value}원";
+                priceText.text = $"{value}$";
             }
 
             // 이미지 설정
@@ -103,7 +103,7 @@ public class StoreDirector : MonoBehaviour
     // 플레이어의 금액 UI를 업데이트하는 함수
     void UpdateMoneyUI()
     {
-        moneyText.text = $"{GameDataManager.Instance._money:N0} 원";
+        moneyText.text = $"{GameDataManager.Instance._money:N0} $";
     }
 
     // 아이템 구매 함수 (BuyButton onclick method)

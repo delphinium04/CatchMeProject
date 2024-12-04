@@ -22450,8 +22450,6 @@ MonoBehaviour:
   _hasValueSearch: 0
   _hasNavigation: 0
   _houseType: 0
-  _currentStage: 1
-  _money: 0
 --- !u!4 &1016364055
 Transform:
   m_ObjectHideFlags: 0

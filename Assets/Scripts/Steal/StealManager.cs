@@ -67,6 +67,18 @@ public class StealManager : MonoBehaviour
             _people[index]._item = currentItem;
             _itemExistInScene[index] = currentItem;
         }
+        List<StealItem> bestItems = BagAlgorithm(_itemExistInScene, _maxBagSize);
+
+        if (GameDataManager.Instance._hasValueSearch)
+        {
+            for (var index = 0; index < _people.Length; index++)
+            {
+                if (bestItems.Contains(_itemExistInScene[index])) // npc의 가방에 들어가 아이템이 배낭 알고리즘의 결과에 포함되어 있으면
+                {
+                    _people[index].SetParticleActive(true); // 파티클 활성화
+                }
+            }
+        }
 
         _uiManager.SetItemList(_itemExistInScene);
     }
@@ -102,6 +114,7 @@ public class StealManager : MonoBehaviour
             _currentBagSize += item.ItemWeight;
             _uiManager.UpdateItemList(item, true);
             _uiManager.UpdateWeight(_currentBagSize, _maxBagSize);
+            npc.SetParticleActive(false);
         }));
     }
 

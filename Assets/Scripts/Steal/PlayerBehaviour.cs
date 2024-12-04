@@ -16,11 +16,13 @@ public class PlayerBehaviour : MonoBehaviour
     public Vector2 _minPos = new Vector2(10, 10);
     public Vector2 _maxPos = new Vector2(10, 10);
 
+    private SpriteRenderer _spriteRenderer;
 
     void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
         _manager = FindObjectOfType<StealManager>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -49,6 +51,11 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 moveDir = input.normalized * (_moveSpeed * Time.deltaTime);
         transform.position += moveDir.x * Vector3.right + moveDir.y * Vector3.up;
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, _minPos.x, _maxPos.x), Mathf.Clamp(transform.position.y, _minPos.y, _maxPos.y));
+
+        if (input.x > 0)
+            _spriteRenderer.flipX = false;
+        else if (input.x < 0)
+            _spriteRenderer.flipX = true;
     }
 
     void OnTriggerEnter2D(Collider2D other)

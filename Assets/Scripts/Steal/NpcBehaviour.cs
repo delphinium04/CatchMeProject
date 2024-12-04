@@ -32,4 +32,15 @@ public class NpcBehaviour : MonoBehaviour
             _interactableSprite.SetActive(false);
     }
 
+    public void SetParticleActive(bool isActive)
+    {
+        if (isActive)
+        {
+            _particle.Play();
+        }
+        else
+        {
+            _particle.Stop();
+        }
+    }
 }
